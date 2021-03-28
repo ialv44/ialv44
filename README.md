@@ -1,8 +1,8 @@
-- 👋 Hi, I’m @ialv44
-- 👀 I’m interested in product, project and data visualization.
+- 👋 Hi, I’m Ishwari Alve
+- 👀 I’m interested in data visualization, product & project management
 - 🌱 I’m currently develping skills in product management.
-- 💞️ I’m looking to collaborate on product strategy & roadmap, impactful projects, new ventures and public speaking
-- 📫 How to reach me ...
+- 💞️ I’m looking to collaborate on product strategy & roadmap, impactful projects, new ventures and public speaking.
+- 📫 Reach me at - @ialv44
 
 <!---
 ialv44/ialv44 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
