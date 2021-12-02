@@ -1,5 +1,5 @@
 - 👋 Hi, I’m Ishwari Alve
-- 👀 I’m interested in data visualization, product & project management
+- 👀 I’m interested in project management, product management and data visualization.
 - 🌱 I’m currently develping skills in project and product management.
 - 💞️ I’m looking to collaborate on product strategy & roadmap, impactful projects, new ventures and public speaking.
 - 📫 Reach me at - @ialv44
