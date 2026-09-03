@@ -1,0 +1,258 @@
+{
+  "date": "2026-09-03",
+  "title": "Startup Brief — Thursday, 3 September 2026",
+  "seconds": 506,
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "intro",
+      "heading": "Today's brief",
+      "subhead": "Thursday, 3 September 2026",
+      "speak": "Good morning. This is your startup brief for Thursday, 3 September 2026. Today we have 8 companies: Lovable, Silmaril, Boardy, Lightsprint, Profound, Replit, Stilta, and Beyond Reach Labs. Each one takes about a minute. I will tell you what they do, what traction they have, why it matters, and one thing you could steal from them for your own idea. Let's go.",
+      "seconds": 24,
+      "meta": {
+        "count": 8,
+        "curated_on": "2026-09-03"
+      }
+    },
+    {
+      "id": "lovable",
+      "kind": "company",
+      "heading": "Lovable",
+      "subhead": "Breakout / benchmark company · Breakout · AI app building",
+      "speak": "Number 1 of 8. Lovable. Describe an app in plain language and it builds and hosts it. Not in an accelerator batch. This one is on the list as a benchmark, because it is the company everyone else in its category is measured against. Lovable turns a text description into a working web application - front end, back end, deployed - aimed at people who are not engineers. It is the flagship of what people call vibe coding. On traction: Went from zero to about five hundred million dollars in annualised revenue in roughly fourteen months. On money: Confirmed a thirteen point three billion dollar valuation in August 2026, raising another four hundred million dollars, up from about six point six billion in December. Why it matters: It is the clearest evidence that the buyer of software tools is shifting from engineers to everyone else. And the thing to steal: The market was never engineers who want to code faster. It was the far larger group who could never code at all.",
+      "seconds": 67,
+      "meta": {
+        "program": "breakout",
+        "program_name": "Breakout / benchmark company",
+        "batch": "Breakout",
+        "sector": "AI app building",
+        "tags": [
+          "no-code",
+          "hypergrowth",
+          "europe"
+        ],
+        "momentum": 5,
+        "sources": [
+          "https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Describe an app in plain language and it builds and hosts it."
+      }
+    },
+    {
+      "id": "silmaril",
+      "kind": "company",
+      "heading": "Silmaril",
+      "subhead": "Y Combinator · 2026 · AI security",
+      "speak": "Number 2 of 8. Silmaril. A firewall for AI agents that defends against prompt injection and retrains itself. Y Combinator, 2026. Silmaril stops attackers from hijacking an agent through the text it reads - a poisoned email, a booby-trapped document, a malicious web page. Their system detects new attack patterns and retrains its own defenses as attacks evolve. On traction: Repeatedly named a standout across the 2026 Y Combinator batches, in a year when AI security was one of the densest categories. On money: Y Combinator, 2026. Why it matters: The moment agents can take real actions - send money, send email, run code - prompt injection stops being a curiosity and becomes the top enterprise blocker. And the thing to steal: Every platform shift creates a security category. This is that category for agents, and it is still early.",
+      "seconds": 54,
+      "meta": {
+        "program": "yc",
+        "program_name": "Y Combinator",
+        "batch": "2026",
+        "sector": "AI security",
+        "tags": [
+          "security",
+          "agents",
+          "ai-safety"
+        ],
+        "momentum": 5,
+        "sources": [
+          "https://www.ycombinator.com/companies/silmaril",
+          "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "A firewall for AI agents that defends against prompt injection and retrains itself."
+      }
+    },
+    {
+      "id": "boardy",
+      "kind": "company",
+      "heading": "Boardy",
+      "subhead": "HF0 Residency · HF0 · Consumer AI, networking",
+      "speak": "Number 3 of 8. Boardy. An AI that phones you, learns who you are, and introduces you to people worth meeting. HF0 Residency, HF0. Boardy is a voice agent you actually talk to. It interviews you about what you are working on and who you need, then makes warm introductions across its network - a super-connector that scales. On traction: Named among HF0's most notable investments. HF0 writes one million dollar cheques for five percent, the largest single cheque among San Francisco accelerators. On money: HF0 Residency portfolio. Why it matters: Voice is the interface where AI feels least like software, and networking is a problem where a machine genuinely has more memory than you do. And the thing to steal: The product is a phone call. No app, no onboarding, no dashboard. Distribution built into the interface.",
+      "seconds": 53,
+      "meta": {
+        "program": "hf0",
+        "program_name": "HF0 Residency",
+        "batch": "HF0",
+        "sector": "Consumer AI, networking",
+        "tags": [
+          "voice",
+          "consumer",
+          "networking"
+        ],
+        "momentum": 4,
+        "sources": [
+          "https://tracxn.com/d/venture-capital/hf0/",
+          "https://www.hf0.com/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "An AI that phones you, learns who you are, and introduces you to people worth meeting."
+      }
+    },
+    {
+      "id": "lightsprint",
+      "kind": "company",
+      "heading": "Lightsprint",
+      "subhead": "Y Combinator · Spring 2026 · Developer tools",
+      "speak": "Number 4 of 8. Lightsprint. Product managers describe a change visually, cloud agents build it, an engineer approves it. Y Combinator, Spring 2026. Lightsprint lets a whole team - including non-engineers - plan visually, preview the result live, and ship. You say what you want changed, pick from visual options, an agent builds it, and an engineer reviews and merges the code. On traction: Named among the buzziest companies of the Spring 2026 batch by multiple investors. On money: Y Combinator Spring 2026. Why it matters: It keeps the engineer in the loop as the approver rather than removing them, which is what actually gets adopted inside real companies. And the thing to steal: The sellable version of 'AI replaces engineers' is 'AI drafts, your engineer approves'. Same output, far less resistance.",
+      "seconds": 51,
+      "meta": {
+        "program": "yc",
+        "program_name": "Y Combinator",
+        "batch": "Spring 2026",
+        "sector": "Developer tools",
+        "tags": [
+          "devtools",
+          "agents",
+          "collaboration"
+        ],
+        "momentum": 4,
+        "sources": [
+          "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/",
+          "https://yctierlist.com/s26/lightsprint/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Product managers describe a change visually, cloud agents build it, an engineer approves it."
+      }
+    },
+    {
+      "id": "profound",
+      "kind": "company",
+      "heading": "Profound",
+      "subhead": "South Park Commons · SPC alum · Marketing analytics",
+      "speak": "Number 5 of 8. Profound. Tells brands how they show up inside AI answers. South Park Commons, SPC alum. Profound measures and shapes how a brand is represented when people ask AI assistants questions - the search-engine-optimisation problem rebuilt for a world where the answer comes from a model, not a list of links. On traction: One of the companies most associated with the South Park Commons community, alongside Baseten, Render, Luma and Imbue. On money: South Park Commons network company. Why it matters: If people stop clicking links, every marketing budget on earth has to be re-pointed at whatever this category becomes. And the thing to steal: When a distribution channel changes shape, the measurement layer for the new channel is a company.",
+      "seconds": 48,
+      "meta": {
+        "program": "spc",
+        "program_name": "South Park Commons",
+        "batch": "SPC alum",
+        "sector": "Marketing analytics",
+        "tags": [
+          "marketing",
+          "analytics",
+          "ai-search"
+        ],
+        "momentum": 4,
+        "sources": [
+          "https://blog.southparkcommons.com/p/spc-founder-fellowship-spring-2026"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Tells brands how they show up inside AI answers."
+      }
+    },
+    {
+      "id": "replit",
+      "kind": "company",
+      "heading": "Replit",
+      "subhead": "Breakout / benchmark company · Breakout · Developer tools",
+      "speak": "Number 6 of 8. Replit. Build and deploy software from the browser, with an agent doing most of the typing. Not in an accelerator batch. This one is on the list as a benchmark, because it is the company everyone else in its category is measured against. Replit is a browser-based environment where you describe what you want and an agent builds, runs and deploys it, with no local setup at all. On traction: Reported growth from about two and a half million dollars to roughly five hundred and twenty-five million dollars in annualised revenue in around fourteen months. On money: One of the fastest companies to one hundred million dollars in annual recurring revenue in 2026. Why it matters: A decade-old developer tool that found a completely new and much larger market by adding an agent to what it already had. And the thing to steal: Distribution you already own plus a new capability can beat a new company with a better model.",
+      "seconds": 63,
+      "meta": {
+        "program": "breakout",
+        "program_name": "Breakout / benchmark company",
+        "batch": "Breakout",
+        "sector": "Developer tools",
+        "tags": [
+          "devtools",
+          "agents",
+          "hypergrowth"
+        ],
+        "momentum": 4,
+        "sources": [
+          "https://www.tryanalyze.ai/blog/fastest-growing-ai-companies"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Build and deploy software from the browser, with an agent doing most of the typing."
+      }
+    },
+    {
+      "id": "stilta",
+      "kind": "company",
+      "heading": "Stilta",
+      "subhead": "Y Combinator · W26 · Legal tech",
+      "speak": "Number 7 of 8. Stilta. Agentic AI built specifically for patent and intellectual property attorneys. Y Combinator, Winter 2026. Stilta automates the document-heavy grind of IP and patent practice: drafting, prior art work, and office action responses, aimed at a profession that bills by the hour and drowns in paperwork. On traction: One of the eight most chased startups at Winter 2026 Demo Day. Legal tech was among the fastest-growing categories in the batch. On money: Y Combinator Winter 2026. Why it matters: Legal AI already produced Harvey and Legora as multi-billion-dollar companies. Patent law is the next unclaimed vertical. And the thing to steal: Go one layer deeper than the obvious vertical. Not legal - patent legal.",
+      "seconds": 46,
+      "meta": {
+        "program": "yc",
+        "program_name": "Y Combinator",
+        "batch": "W26",
+        "sector": "Legal tech",
+        "tags": [
+          "legal",
+          "agents",
+          "vertical-ai"
+        ],
+        "momentum": 4,
+        "sources": [
+          "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Agentic AI built specifically for patent and intellectual property attorneys."
+      }
+    },
+    {
+      "id": "beyond-reach-labs",
+      "kind": "company",
+      "heading": "Beyond Reach Labs",
+      "subhead": "Y Combinator · W26 · Space",
+      "speak": "Number 8 of 8. Beyond Reach Labs. Giant solar panels for satellites. Y Combinator, Winter 2026. Beyond Reach Labs builds very large deployable solar arrays for spacecraft, so satellites and orbital compute can draw far more power than today's designs allow. On traction: One of the eight companies investors chased at Winter 2026 Demo Day. On money: Y Combinator Winter 2026. Why it matters: If anyone actually puts data centres in orbit, power generation is the first constraint they hit. And the thing to steal: Bet on the input a whole speculative industry will need, rather than on the speculative industry itself.",
+      "seconds": 39,
+      "meta": {
+        "program": "yc",
+        "program_name": "Y Combinator",
+        "batch": "W26",
+        "sector": "Space",
+        "tags": [
+          "space",
+          "energy",
+          "deep-tech"
+        ],
+        "momentum": 3,
+        "sources": [
+          "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+        ],
+        "as_of": "2026-09-03",
+        "one_liner": "Giant solar panels for satellites."
+      }
+    },
+    {
+      "id": "patterns",
+      "kind": "patterns",
+      "heading": "The pattern",
+      "subhead": "What repeated today",
+      "speak": "That's the companies. Now the pattern. Three things showed up more than once today: agents, devtools, hypergrowth. When a theme repeats across companies that never met each other, that is usually the market telling you where the money is going. Sectors you just heard: AI app building, AI security, Consumer AI, Developer tools, Legal tech, Marketing analytics, Space.",
+      "seconds": 22,
+      "meta": {
+        "repeated_tags": [
+          "agents",
+          "devtools",
+          "hypergrowth"
+        ],
+        "sectors": [
+          "AI app building",
+          "AI security",
+          "Consumer AI",
+          "Developer tools",
+          "Legal tech",
+          "Marketing analytics",
+          "Space"
+        ]
+      }
+    },
+    {
+      "id": "outro",
+      "kind": "outro",
+      "heading": "Your turn",
+      "subhead": "Three questions to sit with",
+      "speak": "That's the brief. Before you get out of the car, three questions. One. Take what Lovable is doing and ask who else has that exact problem but no budget for a specialist. That is usually the cheaper, faster version of the same company. Two. Of everything you just heard, which one could you build a rough version of this weekend? Not the whole thing. The single most annoying part of it. Three. Which of these companies would be trivial to beat in your own country or your own industry, because they will never bother to come here? Same time tomorrow. New companies.",
+      "seconds": 39,
+      "meta": {
+        "prompt_count": 3,
+        "date": "2026-09-03"
+      }
+    }
+  ]
+}

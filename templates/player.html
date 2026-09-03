@@ -1,0 +1,598 @@
+<title>Startup Brief Radio</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --ground: #EDF1EE;
+    --surface: #FFFFFF;
+    --surface-2: #E1E8E3;
+    --ink: #0B1F24;
+    --ink-soft: #4C6462;
+    --rule: #C7D3CD;
+    --accent: #8A5A00;
+    --accent-fill: #FFC94D;
+    --accent-ink: #17110B;
+    --live: #0E6B5E;
+    --shadow: 0 1px 2px rgba(11, 31, 36, .07), 0 8px 24px -16px rgba(11, 31, 36, .35);
+    --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+    --body: "Newsreader", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --bar-h: 84px;
+  }
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0B1F24;
+      --surface: #102B31;
+      --surface-2: #16383F;
+      --ink: #E9F2EF;
+      --ink-soft: #93B2AF;
+      --rule: #1F4A52;
+      --accent: #FFC94D;
+      --accent-fill: #FFC94D;
+      --accent-ink: #0B1F24;
+      --live: #58D6BA;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 10px 30px -18px rgba(0, 0, 0, .9);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0B1F24;
+    --surface: #102B31;
+    --surface-2: #16383F;
+    --ink: #E9F2EF;
+    --ink-soft: #93B2AF;
+    --rule: #1F4A52;
+    --accent: #FFC94D;
+    --accent-fill: #FFC94D;
+    --accent-ink: #0B1F24;
+    --live: #58D6BA;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 10px 30px -18px rgba(0, 0, 0, .9);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.55;
+    padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 28px 20px 0; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; text-wrap: balance; margin: 0; letter-spacing: -.02em; }
+  .eyebrow {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  a { color: var(--accent); }
+
+  /* ---- masthead ---- */
+  .masthead {
+    display: flex; flex-wrap: wrap; gap: 16px 28px;
+    align-items: baseline; justify-content: space-between;
+    padding-bottom: 18px; border-bottom: 2px solid var(--ink);
+  }
+  .masthead h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); }
+  .masthead .dial {
+    display: flex; gap: 22px; font-family: var(--mono); font-size: .78rem;
+    color: var(--ink-soft); font-variant-numeric: tabular-nums;
+  }
+  .dial b { display: block; color: var(--ink); font-size: 1.05rem; font-weight: 500; }
+
+  /* ---- stage ---- */
+  .stage {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-top: 4px solid var(--accent-fill);
+    box-shadow: var(--shadow); padding: 26px 24px 24px; margin-top: 22px;
+  }
+  .stage-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  #segTitle { font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.03; }
+  #segSub { color: var(--ink-soft); font-family: var(--mono); font-size: .74rem;
+            letter-spacing: .1em; text-transform: uppercase; margin-top: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .chip {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    padding: 3px 8px; border: 1px solid var(--rule); color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .chip.hot { border-color: var(--accent); color: var(--accent); }
+  #segBody {
+    margin-top: 20px; font-size: 1.2rem; line-height: 1.62; max-width: 62ch;
+    font-variant-numeric: oldstyle-nums;
+  }
+  #segBody .said { color: var(--ink-soft); }
+  #segBody .now { background: var(--accent-fill); color: var(--accent-ink); box-decoration-break: clone; }
+
+  .starbtn {
+    flex: none; background: none; border: 1px solid var(--rule); color: var(--ink-soft);
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+    padding: 8px 12px; cursor: pointer; min-height: 44px;
+  }
+  .starbtn[aria-pressed="true"] { background: var(--accent-fill); color: var(--accent-ink); border-color: var(--accent-fill); }
+
+  /* ---- tape counter: one tick per segment ---- */
+  .ticks { display: flex; gap: 3px; margin-top: 22px; }
+  .ticks button {
+    flex: 1; height: 10px; padding: 0; border: 0; cursor: pointer;
+    background: var(--surface-2); transition: background .2s;
+  }
+  .ticks button.done { background: var(--ink-soft); }
+  .ticks button.current { background: var(--accent-fill); }
+  .ticks button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .nextup { margin-top: 12px; font-family: var(--mono); font-size: .72rem; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--ink-soft); }
+  .nextup b { color: var(--ink); font-weight: 500; }
+
+  /* ---- lists ---- */
+  section { margin-top: 46px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+  .sec-head h2 { font-size: 1.15rem; }
+  .sec-head span { font-family: var(--mono); font-size: .72rem; color: var(--ink-soft); }
+  ol.queue { list-style: none; margin: 0; padding: 0; }
+  ol.queue li { border-bottom: 1px solid var(--rule); }
+  .row {
+    width: 100%; display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 14px;
+    align-items: baseline; background: none; border: 0; color: inherit;
+    font: inherit; text-align: left; padding: 14px 6px; cursor: pointer; min-height: 52px;
+  }
+  .row:hover { background: var(--surface); }
+  .row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .row .num { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .row .name { font-family: var(--display); font-weight: 600; font-size: 1.05rem; }
+  .row .desc { display: block; font-size: .95rem; color: var(--ink-soft); margin-top: 2px; max-width: 58ch; }
+  .row .dur { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  li.playing .row { background: var(--surface); box-shadow: inset 4px 0 0 var(--accent-fill); }
+  li.playing .num { color: var(--accent); }
+
+  .lib-group { margin-top: 26px; }
+  .lib-group h3 { font-size: .95rem; font-family: var(--mono); font-weight: 500; letter-spacing: .1em;
+                  text-transform: uppercase; color: var(--ink-soft); }
+  .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 2px; margin-top: 10px; }
+  .lib-btn {
+    text-align: left; background: var(--surface); border: 1px solid var(--rule);
+    color: inherit; font: inherit; padding: 12px 14px; cursor: pointer; min-height: 64px;
+  }
+  .lib-btn:hover { border-color: var(--accent); }
+  .lib-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lib-btn b { font-family: var(--display); font-weight: 600; display: block; }
+  .lib-btn span { font-size: .88rem; color: var(--ink-soft); }
+
+  #starred:empty::after {
+    content: "Nothing starred yet. Hit Star while a company is playing and it collects here.";
+    color: var(--ink-soft); font-size: .95rem;
+  }
+
+  /* ---- transport ---- */
+  .transport {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    background: var(--surface); border-top: 1px solid var(--rule);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -10px 30px -22px rgba(0,0,0,.8);
+  }
+  .transport-in { max-width: 60rem; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+  .tbtn {
+    background: none; border: 1px solid var(--rule); color: var(--ink);
+    min-width: 56px; min-height: 56px; cursor: pointer; font-family: var(--mono);
+    font-size: .8rem; display: grid; place-items: center;
+  }
+  .tbtn:hover { border-color: var(--accent); }
+  .tbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tbtn.play { background: var(--accent-fill); color: var(--accent-ink); border-color: var(--accent-fill);
+               min-width: 92px; min-height: 56px; font-weight: 500; letter-spacing: .06em; }
+  .tbtn svg { width: 20px; height: 20px; fill: currentColor; }
+  .now-strip { flex: 1; min-width: 0; padding: 0 6px; }
+  .now-strip .l1 { font-family: var(--display); font-weight: 600; font-size: 1rem;
+                   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .now-strip .l2 { font-family: var(--mono); font-size: .7rem; color: var(--ink-soft);
+                   letter-spacing: .08em; text-transform: uppercase; }
+  .rate { display: flex; gap: 2px; }
+  .rate button {
+    font-family: var(--mono); font-size: .74rem; min-width: 44px; min-height: 56px;
+    background: none; border: 1px solid var(--rule); border-left: 0; color: var(--ink-soft); cursor: pointer;
+  }
+  .rate button:first-child { border-left: 1px solid var(--rule); }
+  .rate button[aria-pressed="true"] { background: var(--accent-fill); color: var(--accent-ink); border-color: var(--accent-fill); }
+  .hint { color: var(--ink-soft); font-size: .85rem; margin-top: 14px; }
+  .warn { border-left: 3px solid var(--accent); padding: 10px 14px; background: var(--surface);
+          color: var(--ink-soft); font-size: .92rem; margin-top: 18px; }
+  footer { margin: 54px 0 0; padding: 20px 0 30px; border-top: 1px solid var(--rule);
+           color: var(--ink-soft); font-size: .85rem; }
+  @media (max-width: 620px) {
+    .now-strip .l2 { display: none; }
+    .rate button:nth-child(3) { display: none; }
+    .tbtn.play { min-width: 76px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="eyebrow" id="kicker">Daily startup brief</div>
+      <h1 id="epTitle">Startup Brief</h1>
+    </div>
+    <div class="dial">
+      <div>Run time<b id="epLen">—</b></div>
+      <div>Companies<b id="epCount">—</b></div>
+      <div>Watchlist<b id="epPool">—</b></div>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div class="stage-head">
+      <div>
+        <h2 id="segTitle">Loading…</h2>
+        <div id="segSub"></div>
+      </div>
+      <button class="starbtn" id="starBtn" aria-pressed="false">☆ Star</button>
+    </div>
+    <div class="chips" id="segChips"></div>
+    <div id="segBody"></div>
+    <div class="ticks" id="ticks" role="group" aria-label="Jump to segment"></div>
+    <div class="nextup" id="nextUp"></div>
+  </div>
+
+  <div class="warn" id="ttsWarn" hidden></div>
+  <p class="hint">Space plays and pauses. Left and right arrows skip. It keeps going on its own — put the phone down.</p>
+
+  <section>
+    <div class="sec-head"><h2>Today's run order</h2><span id="queueMeta"></span></div>
+    <ol class="queue" id="queue"></ol>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Starred</h2><span>Tap to hear it again</span></div>
+    <div class="lib-grid" id="starred" style="margin-top:14px"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>The whole watchlist</h2><span id="libMeta"></span></div>
+    <div id="library"></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<div class="transport">
+  <div class="transport-in">
+    <button class="tbtn" id="prevBtn" title="Previous (←)" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zm12 0v14l-9-7z"/></svg>
+    </button>
+    <button class="tbtn play" id="playBtn">PLAY</button>
+    <button class="tbtn" id="nextBtn" title="Next (→)" aria-label="Next">
+      <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM6 5l9 7-9 7z"/></svg>
+    </button>
+    <div class="now-strip">
+      <div class="l1" id="stripTitle">—</div>
+      <div class="l2" id="stripSub"></div>
+    </div>
+    <div class="rate" id="rate" role="group" aria-label="Speed"></div>
+  </div>
+</div>
+
+<script>
+const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds":0,"segments":[]},"library":[],"programs":{}};
+
+(function () {
+  "use strict";
+  const EP = DATA.episode, LIB = DATA.library || [], PROGRAMS = DATA.programs || {};
+  const SEGS = EP.segments || [];
+  const KEY = "briefing:" + (EP.date || "preview");
+  const synth = window.speechSynthesis;
+
+  const el = (id) => document.getElementById(id);
+  const state = {
+    index: 0, sentences: [], sentenceAt: 0, playing: false,
+    rate: 1, voice: null, adhoc: null, starred: []
+  };
+
+  /* ---------- persistence (private to this viewer, may be unavailable) ---------- */
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (Number.isInteger(saved.index)) state.index = Math.min(saved.index, SEGS.length - 1);
+        if (saved.rate) state.rate = saved.rate;
+      }
+      state.starred = JSON.parse(localStorage.getItem("briefing:starred") || "[]");
+    } catch (e) { /* private mode, blocked storage — carry on */ }
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ index: state.index, rate: state.rate }));
+      localStorage.setItem("briefing:starred", JSON.stringify(state.starred));
+    } catch (e) { /* nothing to do */ }
+  }
+
+  /* ---------- helpers ---------- */
+  const mmss = (s) => Math.floor(s / 60) + ":" + String(Math.round(s % 60)).padStart(2, "0");
+  function splitSentences(text) {
+    // Browsers truncate long utterances, so every segment is spoken sentence by sentence.
+    return (text || "").split(/(?<=[.!?])\s+/).filter((s) => s.trim().length);
+  }
+  const current = () => state.adhoc || SEGS[state.index] || null;
+
+  function pickVoice() {
+    const voices = synth ? synth.getVoices() : [];
+    if (!voices.length) return null;
+    const wanted = [/en-GB.*(Google|Natural|Daniel|Serena)/i, /Google UK English/i,
+                    /en-US.*(Google|Natural|Samantha|Aaron)/i, /^en[-_]/i];
+    for (const re of wanted) {
+      const hit = voices.find((v) => re.test(v.name) || re.test(v.lang));
+      if (hit) return hit;
+    }
+    return voices[0];
+  }
+
+  /* ---------- rendering ---------- */
+  function renderSegment() {
+    const seg = current();
+    if (!seg) return;
+    el("segTitle").textContent = seg.heading;
+    el("segSub").textContent = seg.subhead || "";
+    el("stripTitle").textContent = seg.heading;
+    el("stripSub").textContent = seg.subhead || EP.title;
+
+    const chips = [];
+    const meta = seg.meta || {};
+    if (meta.program_name) chips.push({ t: meta.program_name, hot: seg.kind === "company" });
+    if (meta.batch) chips.push({ t: meta.batch });
+    if (meta.momentum) chips.push({ t: "momentum " + meta.momentum + "/5", hot: meta.momentum >= 5 });
+    (meta.tags || []).slice(0, 4).forEach((t) => chips.push({ t: t.replace(/-/g, " ") }));
+    el("segChips").innerHTML = chips
+      .map((c) => '<span class="chip' + (c.hot ? " hot" : "") + '">' + esc(c.t) + "</span>").join("");
+
+    state.sentences = splitSentences(seg.speak);
+    state.sentenceAt = 0;
+    paintBody();
+
+    const starrable = seg.kind === "company";
+    el("starBtn").hidden = !starrable;
+    el("starBtn").setAttribute("aria-pressed", String(starrable && state.starred.includes(seg.id)));
+    el("starBtn").textContent = (starrable && state.starred.includes(seg.id)) ? "★ Starred" : "☆ Star";
+
+    const upcoming = state.adhoc ? SEGS[state.index] : SEGS[state.index + 1];
+    el("nextUp").innerHTML = upcoming
+      ? (state.adhoc ? "Back to the brief: " : "Next up: ") + "<b>" + esc(upcoming.heading) + "</b>"
+      : "Last one. That's the brief.";
+
+    document.querySelectorAll("#queue li").forEach((li, i) => {
+      li.classList.toggle("playing", !state.adhoc && i === state.index);
+    });
+    document.querySelectorAll("#ticks button").forEach((b, i) => {
+      b.className = i === state.index && !state.adhoc ? "current" : (i < state.index ? "done" : "");
+    });
+  }
+
+  function paintBody() {
+    el("segBody").innerHTML = state.sentences.map((s, i) => {
+      const cls = i < state.sentenceAt ? "said" : (i === state.sentenceAt && state.playing ? "now" : "");
+      return '<span class="' + cls + '">' + esc(s) + "</span> ";
+    }).join("");
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  function renderQueue() {
+    el("queue").innerHTML = SEGS.map((s, i) => {
+      const label = s.kind === "company" ? (s.meta.one_liner || s.subhead) : s.subhead;
+      return '<li><button class="row" data-i="' + i + '">' +
+        '<span class="num">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<span><span class="name">' + esc(s.heading) + '</span><span class="desc">' + esc(label || "") + "</span></span>" +
+        '<span class="dur">' + mmss(s.seconds) + "</span></button></li>";
+    }).join("");
+    el("queue").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-i]");
+      if (btn) go(Number(btn.dataset.i));
+    });
+
+    el("ticks").innerHTML = SEGS.map((s, i) =>
+      '<button data-i="' + i + '" title="' + esc(s.heading) + '" aria-label="' + esc(s.heading) + '"></button>').join("");
+    el("ticks").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-i]");
+      if (btn) go(Number(btn.dataset.i));
+    });
+  }
+
+  function renderLibrary() {
+    const groups = {};
+    LIB.forEach((c) => { (groups[c.program] = groups[c.program] || []).push(c); });
+    el("library").innerHTML = Object.keys(groups).map((key) => {
+      const rows = groups[key].map((c) =>
+        '<button class="lib-btn" data-cid="' + esc(c.id) + '"><b>' + esc(c.name) + "</b>" +
+        "<span>" + esc(c.one_liner) + "</span></button>").join("");
+      return '<div class="lib-group"><h3>' + esc(PROGRAMS[key] || key) +
+             " · " + groups[key].length + '</h3><div class="lib-grid">' + rows + "</div></div>";
+    }).join("");
+    el("library").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-cid]");
+      if (btn) playCompany(btn.dataset.cid);
+    });
+    el("libMeta").textContent = LIB.length + " companies · tap any one to hear it now";
+  }
+
+  function renderStarred() {
+    const starred = state.starred
+      .map((id) => LIB.find((c) => c.id === id))
+      .filter(Boolean);
+    el("starred").innerHTML = starred.map((c) =>
+      '<button class="lib-btn" data-cid="' + esc(c.id) + '"><b>★ ' + esc(c.name) + "</b>" +
+      "<span>" + esc(c.one_liner) + "</span></button>").join("");
+  }
+  el("starred").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-cid]");
+    if (btn) playCompany(btn.dataset.cid);
+  });
+
+  /* ---------- speaking ---------- */
+  let keepAlive = null;
+  function speakCurrentSentence() {
+    if (!synth || !state.playing) return;
+    const line = state.sentences[state.sentenceAt];
+    if (line === undefined) { advance(); return; }
+    const utter = new SpeechSynthesisUtterance(line);
+    utter.rate = state.rate;
+    utter.pitch = 1;
+    if (state.voice) { utter.voice = state.voice; utter.lang = state.voice.lang; }
+    utter.onend = () => {
+      if (!state.playing) return;
+      state.sentenceAt += 1;
+      if (state.sentenceAt >= state.sentences.length) advance();
+      else { paintBody(); speakCurrentSentence(); }
+    };
+    utter.onerror = (e) => {
+      if (e.error === "interrupted" || e.error === "canceled") return;
+      stop();
+      showWarn("This browser stopped the voice partway. Tap PLAY to pick it back up.");
+    };
+    synth.speak(utter);
+    paintBody();
+  }
+
+  function advance() {
+    if (state.adhoc) { state.adhoc = null; renderSegment(); stop(); return; }
+    if (state.index >= SEGS.length - 1) { stop(); state.sentenceAt = state.sentences.length; paintBody(); return; }
+    state.index += 1;
+    save();
+    renderSegment();
+    speakCurrentSentence();
+  }
+
+  function play() {
+    if (!synth) { showWarn("This browser has no built-in voice. The text below is the full brief — read it, or generate audio files from the repo."); return; }
+    state.playing = true;
+    el("playBtn").textContent = "PAUSE";
+    if (!state.voice) state.voice = pickVoice();
+    synth.cancel();
+    speakCurrentSentence();
+    // Chrome silently pauses long synthesis; nudging it keeps the brief running.
+    clearInterval(keepAlive);
+    keepAlive = setInterval(() => { if (state.playing && synth.paused) synth.resume(); }, 8000);
+    updateMediaSession();
+  }
+
+  function stop() {
+    state.playing = false;
+    el("playBtn").textContent = "PLAY";
+    clearInterval(keepAlive);
+    if (synth) synth.cancel();
+    paintBody();
+    updateMediaSession();
+  }
+
+  function toggle() { state.playing ? stop() : play(); }
+
+  function go(i) {
+    state.adhoc = null;
+    state.index = Math.max(0, Math.min(i, SEGS.length - 1));
+    save();
+    renderSegment();
+    if (state.playing) { synth.cancel(); speakCurrentSentence(); } else { play(); }
+  }
+
+  function playCompany(cid) {
+    const inToday = SEGS.findIndex((s) => s.id === cid);
+    if (inToday >= 0) { go(inToday); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    const c = LIB.find((x) => x.id === cid);
+    if (!c) return;
+    state.adhoc = {
+      id: c.id, kind: "company", heading: c.name,
+      subhead: (PROGRAMS[c.program] || c.program) + " · " + c.batch + " · " + c.sector,
+      speak: c.speak, seconds: c.seconds,
+      meta: { program_name: PROGRAMS[c.program] || c.program, batch: c.batch, momentum: c.momentum, tags: c.tags }
+    };
+    renderSegment();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (synth) synth.cancel();
+    state.playing = false;
+    play();
+  }
+
+  function showWarn(msg) {
+    const box = el("ttsWarn");
+    box.textContent = msg;
+    box.hidden = false;
+  }
+
+  /* ---------- media keys (steering wheel / lock screen) ---------- */
+  function updateMediaSession() {
+    if (!("mediaSession" in navigator)) return;
+    const seg = current();
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: seg ? seg.heading : EP.title,
+        artist: EP.title,
+        album: "Startup Brief Radio"
+      });
+      navigator.mediaSession.playbackState = state.playing ? "playing" : "paused";
+      navigator.mediaSession.setActionHandler("play", play);
+      navigator.mediaSession.setActionHandler("pause", stop);
+      navigator.mediaSession.setActionHandler("nexttrack", () => go(state.index + 1));
+      navigator.mediaSession.setActionHandler("previoustrack", () => go(state.index - 1));
+    } catch (e) { /* not supported here */ }
+  }
+
+  /* ---------- wiring ---------- */
+  el("playBtn").addEventListener("click", toggle);
+  el("nextBtn").addEventListener("click", () => go(state.index + 1));
+  el("prevBtn").addEventListener("click", () => go(state.index - 1));
+  el("starBtn").addEventListener("click", () => {
+    const seg = current();
+    if (!seg || seg.kind !== "company") return;
+    const at = state.starred.indexOf(seg.id);
+    if (at >= 0) state.starred.splice(at, 1); else state.starred.push(seg.id);
+    save(); renderSegment(); renderStarred();
+  });
+
+  el("rate").innerHTML = [0.9, 1, 1.15, 1.3].map((r) =>
+    '<button data-r="' + r + '">' + r.toFixed(2).replace(/0$/, "").replace(/\.$/, "") + "×</button>").join("");
+  el("rate").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-r]");
+    if (!btn) return;
+    state.rate = Number(btn.dataset.r);
+    paintRate(); save();
+    if (state.playing) { synth.cancel(); speakCurrentSentence(); }
+  });
+  function paintRate() {
+    document.querySelectorAll("#rate button").forEach((b) =>
+      b.setAttribute("aria-pressed", String(Number(b.dataset.r) === state.rate)));
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest("input, textarea")) return;
+    if (e.code === "Space") { e.preventDefault(); toggle(); }
+    if (e.code === "ArrowRight") { e.preventDefault(); go(state.index + 1); }
+    if (e.code === "ArrowLeft") { e.preventDefault(); go(state.index - 1); }
+  });
+
+  if (synth) {
+    synth.onvoiceschanged = () => { if (!state.voice) state.voice = pickVoice(); };
+    window.addEventListener("beforeunload", () => synth.cancel());
+  }
+
+  /* ---------- boot ---------- */
+  load();
+  el("epTitle").textContent = EP.title;
+  el("kicker").textContent = "Daily startup brief · " + (EP.date || "");
+  el("epLen").textContent = mmss(EP.seconds || 0);
+  el("epCount").textContent = SEGS.filter((s) => s.kind === "company").length;
+  el("epPool").textContent = LIB.length;
+  el("queueMeta").textContent = SEGS.length + " segments · " + mmss(EP.seconds || 0);
+  el("foot").textContent = "Figures are as reported by the sources in the repository watchlist, "
+    + "gathered " + (DATA.curated_on || EP.date) + ". Treat valuations and revenue as reported, not audited.";
+  renderQueue();
+  renderLibrary();
+  renderStarred();
+  renderSegment();
+  paintRate();
+  if (!synth) showWarn("This browser has no built-in voice, so nothing will speak. The full text of every segment is on the page.");
+})();
+</script>

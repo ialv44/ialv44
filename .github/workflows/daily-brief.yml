@@ -1,0 +1,51 @@
+name: Daily brief
+
+on:
+  schedule:
+    # 05:30 UTC — 11:00 in India, ready before the morning drive.
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Companies in the episode"
+        default: "8"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Test
+        run: python -m unittest discover -s tests
+
+      - name: Install a voice
+        run: pip install edge-tts
+
+      - name: Build today's brief
+        run: |
+          python -m briefing brief --count "${{ inputs.count || 8 }}" --audio
+        env:
+          PYTHONPATH: src
+
+      - name: Build the podcast feed
+        run: |
+          python -m briefing feed \
+            --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        env:
+          PYTHONPATH: src
+
+      - name: Commit the episode
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add out
+          git diff --staged --quiet || git commit -m "Brief for $(date -u +%Y-%m-%d)"
+          git push
