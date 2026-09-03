@@ -1,8 +1,9 @@
 # Daily startup briefings, for listening
 
 A daily audio brief on startups that have raised real money and are moving
-fast — Y Combinator, a16z Speedrun, HF0, South Park Commons, plus the breakout
-companies everyone else is benchmarked against.
+fast — Y Combinator, a16z Speedrun and Andreessen Horowitz's own portfolio, HF0,
+South Park Commons, plus the breakout companies everyone else is benchmarked
+against.
 
 It is built for the car. You press play once, and it talks you through a handful
 of companies: what they do, what traction they have, where the money came from,
@@ -47,7 +48,7 @@ commits the result, so a new episode is waiting when you get in the car.
 | `brief` | Build a day's episode. `--date`, `--count`, `--exclude`, `--audio` |
 | `feed` | Write the podcast RSS for everything in `out/` |
 | `check` | Validate the watchlist and show how the rotation is spread |
-| `list` | Print the watchlist. `--program yc` to filter |
+| `list` | Print the watchlist. `--program a16z` to filter |
 
 ## The watchlist
 
@@ -62,7 +63,7 @@ Edit it freely — it is the whole content layer:
 {
   "id": "your-company",
   "name": "Your Company",
-  "program": "yc",              // yc | speedrun | hf0 | spc | breakout
+  "program": "yc",              // yc | speedrun | a16z | hf0 | spc | breakout
   "batch": "W26",
   "momentum": 5,                // 5 = headliner, heard three times as often
   "one_liner": "One sentence a person would say out loud.",

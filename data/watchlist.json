@@ -7,7 +7,8 @@
     "speedrun": "a16z Speedrun",
     "hf0": "HF0 Residency",
     "spc": "South Park Commons",
-    "breakout": "Breakout / benchmark company"
+    "breakout": "Breakout / benchmark company",
+    "a16z": "Andreessen Horowitz"
   },
   "companies": [
     {
@@ -23,8 +24,16 @@
       "why_it_matters": "It is the loudest proof that AI hardware can go from zero to real revenue in months, not years, when the product does one obvious thing well.",
       "founder_angle": "Notice they did not build a general assistant. They picked one moment - the meeting you just walked out of - and owned it end to end.",
       "momentum": 5,
-      "tags": ["hardware", "consumer", "productivity", "revenue-outlier"],
-      "sources": ["https://valueaddvc.com/blog/y-combinator-w26-batch-the-best-startups-from-the-latest-class", "https://lobstercap.substack.com/p/yc-w26-the-definitive-investors-guide"],
+      "tags": [
+        "hardware",
+        "consumer",
+        "productivity",
+        "revenue-outlier"
+      ],
+      "sources": [
+        "https://valueaddvc.com/blog/y-combinator-w26-batch-the-best-startups-from-the-latest-class",
+        "https://lobstercap.substack.com/p/yc-w26-the-definitive-investors-guide"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -40,8 +49,14 @@
       "why_it_matters": "Everyone is racing to build humanoids. Almost nobody has the training data. Asimov sells to all sides of that race.",
       "founder_angle": "The data bottleneck behind a hyped hardware wave is often a better business than the hardware.",
       "momentum": 5,
-      "tags": ["robotics", "data", "picks-and-shovels"],
-      "sources": ["https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"],
+      "tags": [
+        "robotics",
+        "data",
+        "picks-and-shovels"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -57,8 +72,14 @@
       "why_it_matters": "Penetration testing has been a consulting business for thirty years. Agents turn it into software with software margins.",
       "founder_angle": "Look for expensive services delivered once a year by humans. Those are the fattest targets for agents.",
       "momentum": 5,
-      "tags": ["security", "agents", "b2b"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "security",
+        "agents",
+        "b2b"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -74,8 +95,14 @@
       "why_it_matters": "Debugging production is where engineers actually lose their nights. This is the on-call engineer as a product.",
       "founder_angle": "The winning agent products do not stop at the diagnosis. They deliver the fix.",
       "momentum": 4,
-      "tags": ["devtools", "agents", "observability"],
-      "sources": ["https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"],
+      "tags": [
+        "devtools",
+        "agents",
+        "observability"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -91,8 +118,14 @@
       "why_it_matters": "Whoever defines the measuring stick quietly sets the agenda for the whole industry.",
       "founder_angle": "Owning the scoreboard in a hyped field buys you distribution and credibility that money cannot.",
       "momentum": 4,
-      "tags": ["benchmarks", "research", "community"],
-      "sources": ["https://www.extruct.ai/research/ycw26/"],
+      "tags": [
+        "benchmarks",
+        "research",
+        "community"
+      ],
+      "sources": [
+        "https://www.extruct.ai/research/ycw26/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -108,8 +141,14 @@
       "why_it_matters": "One of the very few genuinely consumer AI hits in a batch that was overwhelmingly business software.",
       "founder_angle": "AI as the game engine, not the chatbot. The model generates the world, the player still plays a game.",
       "momentum": 4,
-      "tags": ["games", "consumer", "simulation"],
-      "sources": ["https://lobstercap.substack.com/p/yc-w26-the-definitive-investors-guide"],
+      "tags": [
+        "games",
+        "consumer",
+        "simulation"
+      ],
+      "sources": [
+        "https://lobstercap.substack.com/p/yc-w26-the-definitive-investors-guide"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -125,8 +164,14 @@
       "why_it_matters": "A signal in itself. Investors are again funding twenty-year swings, not just software with revenue next quarter.",
       "founder_angle": "An outrageous long-term vision still raises money, but only if the first milestone is unglamorous and concrete.",
       "momentum": 3,
-      "tags": ["space", "deep-tech", "moonshot"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "space",
+        "deep-tech",
+        "moonshot"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -142,8 +187,14 @@
       "why_it_matters": "Proof that the boring physical economy is where a lot of the remaining automation money sits.",
       "founder_angle": "Ranching is not a sexy market. It is also a market where nobody has built decent software and the buyer feels the pain daily.",
       "momentum": 3,
-      "tags": ["agtech", "drones", "automation"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "agtech",
+        "drones",
+        "automation"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -159,8 +210,14 @@
       "why_it_matters": "The public internet is exhausted as a training source. Fresh human data is now the scarce input.",
       "founder_angle": "Same pattern as Asimov and Mercor. Marketplaces for scarce training inputs are the quiet winners of this cycle.",
       "momentum": 4,
-      "tags": ["data", "marketplace", "ai-infra"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "data",
+        "marketplace",
+        "ai-infra"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -176,8 +233,14 @@
       "why_it_matters": "Legal AI already produced Harvey and Legora as multi-billion-dollar companies. Patent law is the next unclaimed vertical.",
       "founder_angle": "Go one layer deeper than the obvious vertical. Not legal - patent legal.",
       "momentum": 4,
-      "tags": ["legal", "agents", "vertical-ai"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "legal",
+        "agents",
+        "vertical-ai"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -193,8 +256,14 @@
       "why_it_matters": "AI workloads made data movement a bottleneck again, and the incumbent tools were designed for a smaller era.",
       "founder_angle": "Old, unglamorous infrastructure problems get new, large markets when the workload changes shape.",
       "momentum": 3,
-      "tags": ["infrastructure", "devtools", "performance"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "infrastructure",
+        "devtools",
+        "performance"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -210,8 +279,14 @@
       "why_it_matters": "If anyone actually puts data centres in orbit, power generation is the first constraint they hit.",
       "founder_angle": "Bet on the input a whole speculative industry will need, rather than on the speculative industry itself.",
       "momentum": 3,
-      "tags": ["space", "energy", "deep-tech"],
-      "sources": ["https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"],
+      "tags": [
+        "space",
+        "energy",
+        "deep-tech"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/28/from-moon-hotels-to-cattle-herding-8-startups-investors-chased-at-yc-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -227,8 +302,14 @@
       "why_it_matters": "Energy procurement went from a back-office line item to a board-level constraint the moment everyone started training models.",
       "founder_angle": "When a cost line explodes, the software that manages that line becomes a category overnight.",
       "momentum": 4,
-      "tags": ["energy", "b2b", "climate"],
-      "sources": ["https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"],
+      "tags": [
+        "energy",
+        "b2b",
+        "climate"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -244,8 +325,14 @@
       "why_it_matters": "Detection is the half of the counter-drone problem that has to be solved before any interceptor matters.",
       "founder_angle": "In every hyped category, ask which unsexy half of the problem everyone is skipping.",
       "momentum": 3,
-      "tags": ["defense", "hardware", "sensors"],
-      "sources": ["https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"],
+      "tags": [
+        "defense",
+        "hardware",
+        "sensors"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -261,8 +348,13 @@
       "why_it_matters": "A reminder that small, ignored institutional markets still get funded when the software is obviously ten times better.",
       "founder_angle": "You do not need a large market to start. You need a market where the current software is genuinely terrible.",
       "momentum": 2,
-      "tags": ["education", "vertical-saas"],
-      "sources": ["https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"],
+      "tags": [
+        "education",
+        "vertical-saas"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/26/16-of-the-most-interesting-startups-from-yc-w26-demo-day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -278,8 +370,16 @@
       "why_it_matters": "The cost asymmetry of drone warfare is the defining defense problem of the decade, and this is the batch's clearest bet on it.",
       "founder_angle": "The pitch was not better technology. It was a better unit cost against a threat that is already here.",
       "momentum": 5,
-      "tags": ["defense", "robotics", "counter-drone", "highest-valued"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/", "https://mezha.net/eng/bukvy/e82c760a_yc_demo_day/"],
+      "tags": [
+        "defense",
+        "robotics",
+        "counter-drone",
+        "highest-valued"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/",
+        "https://mezha.net/eng/bukvy/e82c760a_yc_demo_day/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -295,8 +395,15 @@
       "why_it_matters": "Power, not chips, is now the binding constraint on the AI build-out. Everyone knows it. Very few can actually build generation.",
       "founder_angle": "They shipped a physical demonstrator to the meeting. In hard tech, the demo is the deck.",
       "momentum": 5,
-      "tags": ["energy", "nuclear", "deep-tech", "ai-infra"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "energy",
+        "nuclear",
+        "deep-tech",
+        "ai-infra"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -312,8 +419,14 @@
       "why_it_matters": "A repeat founder with a known outcome can raise a very large seed on the strength of the team alone in this market.",
       "founder_angle": "Second-time founders skip the proving stage. If you are a first-timer, your traction has to do that work instead.",
       "momentum": 5,
-      "tags": ["marketing", "agents", "repeat-founder"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "marketing",
+        "agents",
+        "repeat-founder"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -329,8 +442,16 @@
       "why_it_matters": "Agents fail in the enterprise for one boring reason: they do not know the company. Context is becoming its own infrastructure layer.",
       "founder_angle": "The gap between a working demo and a working deployment is almost always context. That gap is a product.",
       "momentum": 5,
-      "tags": ["ai-infra", "enterprise", "agents", "context"],
-      "sources": ["https://techcrunch.com/2026/06/10/jedify-raises-24m-to-help-companies-arm-ai-agents-with-context-on-their-business/", "https://www.calcalistech.com/ctechnews/article/bkcksmp11gx"],
+      "tags": [
+        "ai-infra",
+        "enterprise",
+        "agents",
+        "context"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/10/jedify-raises-24m-to-help-companies-arm-ai-agents-with-context-on-their-business/",
+        "https://www.calcalistech.com/ctechnews/article/bkcksmp11gx"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -346,8 +467,15 @@
       "why_it_matters": "The moment agents can take real actions - send money, send email, run code - prompt injection stops being a curiosity and becomes the top enterprise blocker.",
       "founder_angle": "Every platform shift creates a security category. This is that category for agents, and it is still early.",
       "momentum": 5,
-      "tags": ["security", "agents", "ai-safety"],
-      "sources": ["https://www.ycombinator.com/companies/silmaril", "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "security",
+        "agents",
+        "ai-safety"
+      ],
+      "sources": [
+        "https://www.ycombinator.com/companies/silmaril",
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -363,8 +491,15 @@
       "why_it_matters": "AI writes far more code than any team can review. The bottleneck moved from writing to verifying.",
       "founder_angle": "When a new tool floods a pipeline, the next business is downstream of the flood.",
       "momentum": 5,
-      "tags": ["devtools", "testing", "agents"],
-      "sources": ["https://www.ycombinator.com/companies/arga-labs", "https://www.productmarketfit.tech/p/arga-labs-yc-p26-pitch-deck-how-hit"],
+      "tags": [
+        "devtools",
+        "testing",
+        "agents"
+      ],
+      "sources": [
+        "https://www.ycombinator.com/companies/arga-labs",
+        "https://www.productmarketfit.tech/p/arga-labs-yc-p26-pitch-deck-how-hit"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -380,8 +515,14 @@
       "why_it_matters": "Healthcare's most expensive failure is not diagnosis, it is information that existed but nobody saw in time.",
       "founder_angle": "Some companies join an accelerator with money already in the bank. They are buying the network, not the cheque.",
       "momentum": 4,
-      "tags": ["healthcare", "ai", "data-integration"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "healthcare",
+        "ai",
+        "data-integration"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -397,8 +538,15 @@
       "why_it_matters": "It keeps the engineer in the loop as the approver rather than removing them, which is what actually gets adopted inside real companies.",
       "founder_angle": "The sellable version of 'AI replaces engineers' is 'AI drafts, your engineer approves'. Same output, far less resistance.",
       "momentum": 4,
-      "tags": ["devtools", "agents", "collaboration"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/", "https://yctierlist.com/s26/lightsprint/"],
+      "tags": [
+        "devtools",
+        "agents",
+        "collaboration"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/",
+        "https://yctierlist.com/s26/lightsprint/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -414,8 +562,14 @@
       "why_it_matters": "One agent is a toy. A hundred agents is an operations problem, and operations problems are where durable software gets built.",
       "founder_angle": "Whenever a unit becomes cheap and plentiful, the orchestration layer above it becomes valuable.",
       "momentum": 4,
-      "tags": ["devtools", "agents", "orchestration"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "devtools",
+        "agents",
+        "orchestration"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -431,8 +585,14 @@
       "why_it_matters": "Several companies are trying to manufacture in orbit. Almost none have solved getting the product home affordably.",
       "founder_angle": "Find the step everyone in an emerging industry assumes someone else will solve.",
       "momentum": 4,
-      "tags": ["space", "manufacturing", "logistics"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "space",
+        "manufacturing",
+        "logistics"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -448,8 +608,14 @@
       "why_it_matters": "Imaging is gated by million-dollar machines in fixed buildings. Shrink the machine and the entire access model changes.",
       "founder_angle": "Radical cost reduction is a strategy, not just an outcome. Price first, then design backwards to it.",
       "momentum": 4,
-      "tags": ["healthcare", "hardware", "access"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "healthcare",
+        "hardware",
+        "access"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -465,8 +631,14 @@
       "why_it_matters": "Wearables have measured the body for a decade. Almost nobody has made the mind the product.",
       "founder_angle": "Same sensors, different question. Reframing what existing hardware is for is a real wedge.",
       "momentum": 3,
-      "tags": ["consumer", "hardware", "mental-health"],
-      "sources": ["https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"],
+      "tags": [
+        "consumer",
+        "hardware",
+        "mental-health"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/06/18/the-11-standout-startups-from-ycs-demo-day-according-to-vcs/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -482,8 +654,14 @@
       "why_it_matters": "This is precisely the format you are listening to right now, built as a company. Personalised, interruptible audio is a real emerging category.",
       "founder_angle": "Worth watching closely if you ever want to build in this space - they are the closest competitor to your own daily brief.",
       "momentum": 4,
-      "tags": ["audio", "consumer", "personalisation"],
-      "sources": ["https://genaiassembling.substack.com/p/speedruns-pivot-is-the-playbook-what"],
+      "tags": [
+        "audio",
+        "consumer",
+        "personalisation"
+      ],
+      "sources": [
+        "https://genaiassembling.substack.com/p/speedruns-pivot-is-the-playbook-what"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -499,8 +677,14 @@
       "why_it_matters": "Day-ninety retention near forty-five percent is the number that matters in consumer, and almost nobody hits it.",
       "founder_angle": "In consumer, one retention number is worth more than any amount of growth narrative.",
       "momentum": 4,
-      "tags": ["consumer", "social", "retention"],
-      "sources": ["https://eu.36kr.com/en/p/3786499459685632"],
+      "tags": [
+        "consumer",
+        "social",
+        "retention"
+      ],
+      "sources": [
+        "https://eu.36kr.com/en/p/3786499459685632"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -516,8 +700,14 @@
       "why_it_matters": "Vertical agents in unglamorous heavy industry are one of the clearest patterns across every 2026 cohort.",
       "founder_angle": "Pick an industry you have unfair access to. Domain access beats model access now.",
       "momentum": 3,
-      "tags": ["industrial", "agents", "vertical-ai"],
-      "sources": ["https://eu.36kr.com/en/p/3786499459685632"],
+      "tags": [
+        "industrial",
+        "agents",
+        "vertical-ai"
+      ],
+      "sources": [
+        "https://eu.36kr.com/en/p/3786499459685632"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -533,8 +723,14 @@
       "why_it_matters": "Top-tier American accelerators are now funding companies solving local problems in emerging markets, not just Silicon Valley software.",
       "founder_angle": "Your local market's broken process is a fundable company, and you understand it better than anyone in San Francisco.",
       "momentum": 3,
-      "tags": ["agtech", "procurement", "emerging-markets"],
-      "sources": ["https://eu.36kr.com/en/p/3786499459685632"],
+      "tags": [
+        "agtech",
+        "procurement",
+        "emerging-markets"
+      ],
+      "sources": [
+        "https://eu.36kr.com/en/p/3786499459685632"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -550,8 +746,14 @@
       "why_it_matters": "Commercial lending is enormous, slow, and still runs on PDFs and email. That combination is the classic agent opportunity.",
       "founder_angle": "Follow the PDF. Wherever an industry still emails documents around, there is a company.",
       "momentum": 3,
-      "tags": ["fintech", "lending", "automation"],
-      "sources": ["https://eu.36kr.com/en/p/3786499459685632"],
+      "tags": [
+        "fintech",
+        "lending",
+        "automation"
+      ],
+      "sources": [
+        "https://eu.36kr.com/en/p/3786499459685632"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -567,8 +769,14 @@
       "why_it_matters": "Speedrun's whole thesis is being the first cheque before a much larger seed. Ezra is the proof point.",
       "founder_angle": "Accelerators are increasingly graded on the size of the round that follows, not the demo day.",
       "momentum": 3,
-      "tags": ["speedrun", "seed", "follow-on"],
-      "sources": ["https://startupintros.com/orgs/a16z-speedrun"],
+      "tags": [
+        "speedrun",
+        "seed",
+        "follow-on"
+      ],
+      "sources": [
+        "https://startupintros.com/orgs/a16z-speedrun"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -584,8 +792,15 @@
       "why_it_matters": "Voice is the interface where AI feels least like software, and networking is a problem where a machine genuinely has more memory than you do.",
       "founder_angle": "The product is a phone call. No app, no onboarding, no dashboard. Distribution built into the interface.",
       "momentum": 4,
-      "tags": ["voice", "consumer", "networking"],
-      "sources": ["https://tracxn.com/d/venture-capital/hf0/", "https://www.hf0.com/"],
+      "tags": [
+        "voice",
+        "consumer",
+        "networking"
+      ],
+      "sources": [
+        "https://tracxn.com/d/venture-capital/hf0/",
+        "https://www.hf0.com/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -601,8 +816,14 @@
       "why_it_matters": "The trades are enormous, profitable, fragmented, and almost entirely un-softwared. Repeat founders are now deliberately choosing them.",
       "founder_angle": "A great domain name plus a boring trade is a real strategy. Not everything has to be novel technology.",
       "momentum": 3,
-      "tags": ["vertical-ai", "trades", "smb"],
-      "sources": ["https://tracxn.com/d/venture-capital/hf0/"],
+      "tags": [
+        "vertical-ai",
+        "trades",
+        "smb"
+      ],
+      "sources": [
+        "https://tracxn.com/d/venture-capital/hf0/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -618,8 +839,14 @@
       "why_it_matters": "Security teams are drowning in alerts. Prioritisation, not detection, is the unsolved half.",
       "founder_angle": "HF0 takes repeat and highly technical founders in cohorts of about ten. Tiny cohort, huge cheque - a very different game from a big batch.",
       "momentum": 3,
-      "tags": ["security", "enterprise", "prioritisation"],
-      "sources": ["https://startupintros.com/resources/hf0-residency-fall-2026"],
+      "tags": [
+        "security",
+        "enterprise",
+        "prioritisation"
+      ],
+      "sources": [
+        "https://startupintros.com/resources/hf0-residency-fall-2026"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -635,8 +862,14 @@
       "why_it_matters": "If people stop clicking links, every marketing budget on earth has to be re-pointed at whatever this category becomes.",
       "founder_angle": "When a distribution channel changes shape, the measurement layer for the new channel is a company.",
       "momentum": 4,
-      "tags": ["marketing", "analytics", "ai-search"],
-      "sources": ["https://blog.southparkcommons.com/p/spc-founder-fellowship-spring-2026"],
+      "tags": [
+        "marketing",
+        "analytics",
+        "ai-search"
+      ],
+      "sources": [
+        "https://blog.southparkcommons.com/p/spc-founder-fellowship-spring-2026"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -652,8 +885,15 @@
       "why_it_matters": "The scarce input in AI is no longer compute or data. It is expert human judgement, and Mercor built the exchange for it.",
       "founder_angle": "The fastest growth in this cycle came from a marketplace, not a model. Ask what the labs cannot buy anywhere else.",
       "momentum": 5,
-      "tags": ["marketplace", "ai-data", "hypergrowth"],
-      "sources": ["https://valueaddvc.com/blog/how-does-mercor-make-money-2b-arr-20b-valuation-and-the-expert-data-marketplace-explained", "https://www.forbes.com/sites/richardnieva/2026/07/09/mercor-fundraise/"],
+      "tags": [
+        "marketplace",
+        "ai-data",
+        "hypergrowth"
+      ],
+      "sources": [
+        "https://valueaddvc.com/blog/how-does-mercor-make-money-2b-arr-20b-valuation-and-the-expert-data-marketplace-explained",
+        "https://www.forbes.com/sites/richardnieva/2026/07/09/mercor-fundraise/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -669,8 +909,14 @@
       "why_it_matters": "It is the clearest evidence that the buyer of software tools is shifting from engineers to everyone else.",
       "founder_angle": "The market was never engineers who want to code faster. It was the far larger group who could never code at all.",
       "momentum": 5,
-      "tags": ["no-code", "hypergrowth", "europe"],
-      "sources": ["https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/"],
+      "tags": [
+        "no-code",
+        "hypergrowth",
+        "europe"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -686,8 +932,15 @@
       "why_it_matters": "It set the benchmark every developer-tools founder is now measured against, and it started as a small team competing with Microsoft.",
       "founder_angle": "They rebuilt an existing tool around the new capability instead of bolting the new capability onto the old tool.",
       "momentum": 5,
-      "tags": ["devtools", "hypergrowth", "benchmark"],
-      "sources": ["https://www.tryanalyze.ai/blog/fastest-growing-ai-companies", "https://growthindex.startupriders.com/"],
+      "tags": [
+        "devtools",
+        "hypergrowth",
+        "benchmark"
+      ],
+      "sources": [
+        "https://www.tryanalyze.ai/blog/fastest-growing-ai-companies",
+        "https://growthindex.startupriders.com/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -703,8 +956,15 @@
       "why_it_matters": "Inference is where the money in AI actually gets spent day to day, and Baseten sits directly in that flow.",
       "founder_angle": "A Y Combinator company from 2019 that took six years to become obvious. Timing is a real risk, and patience is a real strategy.",
       "momentum": 5,
-      "tags": ["ai-infra", "inference", "yc-alum"],
-      "sources": ["https://sacra.com/c/baseten/", "https://news.crunchbase.com/venture/biggest-funding-rounds-ai-marketing-robotics-baseten/"],
+      "tags": [
+        "ai-infra",
+        "inference",
+        "yc-alum"
+      ],
+      "sources": [
+        "https://sacra.com/c/baseten/",
+        "https://news.crunchbase.com/venture/biggest-funding-rounds-ai-marketing-robotics-baseten/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -720,8 +980,15 @@
       "why_it_matters": "A two hundred million dollar seed at a billion-dollar valuation, on a research thesis with no product. That is the extreme end of this market.",
       "founder_angle": "Reputation is now collateral. A team from the top of the research world can raise a Series B before writing a product.",
       "momentum": 5,
-      "tags": ["research", "science", "mega-seed"],
-      "sources": ["https://www.finsmes.com/2026/06/mirendil-raises-200m-in-seed-funding-at-1-billion-valuation.html", "https://cryptobriefing.com/mirendil-200m-seed-round-a16z-nvidia/"],
+      "tags": [
+        "research",
+        "science",
+        "mega-seed"
+      ],
+      "sources": [
+        "https://www.finsmes.com/2026/06/mirendil-raises-200m-in-seed-funding-at-1-billion-valuation.html",
+        "https://cryptobriefing.com/mirendil-200m-seed-round-a16z-nvidia/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -737,8 +1004,15 @@
       "why_it_matters": "Customer service was the first big enterprise job that agents took outright, and Sierra is the template everyone copies.",
       "founder_angle": "They charge per resolved issue rather than per seat. Pricing on outcomes is spreading fast across AI products.",
       "momentum": 5,
-      "tags": ["agents", "enterprise", "outcome-pricing"],
-      "sources": ["https://www.tryanalyze.ai/blog/fastest-growing-ai-companies", "https://aifundingtracker.com/top-ai-agent-startups/"],
+      "tags": [
+        "agents",
+        "enterprise",
+        "outcome-pricing"
+      ],
+      "sources": [
+        "https://www.tryanalyze.ai/blog/fastest-growing-ai-companies",
+        "https://aifundingtracker.com/top-ai-agent-startups/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -754,8 +1028,15 @@
       "why_it_matters": "Harvey proved that the most risk-averse industries will buy AI first if you sell it as leverage on billable work rather than as a replacement.",
       "founder_angle": "High hourly rates plus repetitive document work equals the best AI market in the world. Now find the version nobody has claimed.",
       "momentum": 4,
-      "tags": ["legal", "vertical-ai", "enterprise"],
-      "sources": ["https://aifundingtracker.com/top-ai-agent-startups/", "https://growthindex.startupriders.com/"],
+      "tags": [
+        "legal",
+        "vertical-ai",
+        "enterprise"
+      ],
+      "sources": [
+        "https://aifundingtracker.com/top-ai-agent-startups/",
+        "https://growthindex.startupriders.com/"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -771,8 +1052,14 @@
       "why_it_matters": "It is a direct bet that the transformer stays dominant long enough to justify freezing it into hardware.",
       "founder_angle": "The boldest strategies are subtractive. They removed flexibility on purpose and made that the product.",
       "momentum": 4,
-      "tags": ["semiconductors", "ai-infra", "deep-tech"],
-      "sources": ["https://www.fastaijobs.com/career-hacks/biggest-ai-funding-rounds-2026"],
+      "tags": [
+        "semiconductors",
+        "ai-infra",
+        "deep-tech"
+      ],
+      "sources": [
+        "https://www.fastaijobs.com/career-hacks/biggest-ai-funding-rounds-2026"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -788,8 +1075,14 @@
       "why_it_matters": "Every dollar of the data centre build-out drags networking spend behind it, and that layer has far fewer credible players than compute.",
       "founder_angle": "Sell to the build-out, not to the hype. The suppliers get paid whether or not the applications work out.",
       "momentum": 4,
-      "tags": ["networking", "ai-infra", "hardware"],
-      "sources": ["https://www.fastaijobs.com/career-hacks/biggest-ai-funding-rounds-2026"],
+      "tags": [
+        "networking",
+        "ai-infra",
+        "hardware"
+      ],
+      "sources": [
+        "https://www.fastaijobs.com/career-hacks/biggest-ai-funding-rounds-2026"
+      ],
       "as_of": "2026-09-03"
     },
     {
@@ -805,8 +1098,351 @@
       "why_it_matters": "A decade-old developer tool that found a completely new and much larger market by adding an agent to what it already had.",
       "founder_angle": "Distribution you already own plus a new capability can beat a new company with a better model.",
       "momentum": 4,
-      "tags": ["devtools", "agents", "hypergrowth"],
-      "sources": ["https://www.tryanalyze.ai/blog/fastest-growing-ai-companies"],
+      "tags": [
+        "devtools",
+        "agents",
+        "hypergrowth"
+      ],
+      "sources": [
+        "https://www.tryanalyze.ai/blog/fastest-growing-ai-companies"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "unconventional-ai",
+      "name": "Unconventional AI",
+      "program": "a16z",
+      "batch": "a16z co-led seed",
+      "sector": "AI chips",
+      "one_liner": "Chips designed like a brain, so AI stops burning a power station.",
+      "what_they_do": "Unconventional is a research lab building a new computing architecture for AI. Their observation is that AI models are probabilistic but the chips running them are not, so they are designing hardware that matches the maths - chasing something closer to the twenty watts a human brain runs on.",
+      "traction": "Chief executive Naveen Rao has sold two companies already: Nervana Systems to Intel for three hundred and fifty million dollars, and MosaicML to Databricks for one point three billion. Co-founders include Michael Carbin, Sara Achour and MeeLan Lee.",
+      "funding": "A four hundred and seventy-five million dollar seed round at a four point five billion dollar valuation, co-led by Andreessen Horowitz and Lightspeed, with Lux Capital, DCVC and Jeff Bezos also in. Reported as the first tranche of a round that could reach one billion.",
+      "why_it_matters": "It is the largest seed round in this list by a distance, raised on a thesis and a founder's record, at a company only a couple of months old.",
+      "founder_angle": "Two exits bought him a four point five billion dollar valuation before a product existed. Track record is the only thing that compounds like that.",
+      "momentum": 5,
+      "tags": [
+        "semiconductors",
+        "deep-tech",
+        "mega-seed",
+        "energy"
+      ],
+      "sources": [
+        "https://a16z.com/announcement/investing-in-unconventional/",
+        "https://www.datacenterdynamics.com/en/news/neuromorphic-compute-startup-unconventional-ai-raises-475m-in-seed-funding/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "ornn",
+      "name": "Ornn",
+      "program": "a16z",
+      "batch": "a16z crypto seed",
+      "sector": "Compute markets",
+      "one_liner": "Turns GPU time into a commodity you can trade and hedge, like oil.",
+      "what_they_do": "Ornn is building a futures exchange for compute. Instead of privately negotiating a locked, long-term contract for a block of GPUs, you can price, trade, finance and hedge that capacity. Their price index covers live spot trades on H100, H200, B200 and RTX 5090 hardware.",
+      "traction": "The Ornn Compute Price Index is already distributed on the Bloomberg Terminal, and in May 2026 the Intercontinental Exchange announced a partnership to launch US dollar cash-settled GPU compute futures based on it.",
+      "funding": "A thirty-three million dollar seed round led by Andreessen Horowitz's crypto arm, with Galaxy Ventures, Nordstar and SV Angel joining.",
+      "why_it_matters": "Every commodity in history got a futures market once enough money depended on its price. Compute is now that big, and someone has to be the exchange.",
+      "founder_angle": "They did not build a better GPU cloud. They built the price index for everyone else's, and got it onto Bloomberg.",
+      "momentum": 5,
+      "tags": [
+        "markets",
+        "ai-infra",
+        "fintech",
+        "index"
+      ],
+      "sources": [
+        "https://a16zcrypto.com/posts/article/investing-in-ornn/",
+        "https://www.bloomberg.com/news/articles/2026-06-24/andreessen-horowitz-backs-compute-marketplace-ornn-in-seed-round"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "abridge",
+      "name": "Abridge",
+      "program": "a16z",
+      "batch": "a16z-led Series E",
+      "sector": "Healthcare AI",
+      "one_liner": "Listens to the doctor's appointment and writes the medical note.",
+      "what_they_do": "Abridge is ambient AI for clinicians. It sits in the room, listens to the conversation between doctor and patient, and produces the clinical documentation, so the doctor is not typing into a computer for hours after every shift.",
+      "traction": "The category leader in ambient clinical documentation, deployed across large American health systems.",
+      "funding": "A three hundred million dollar Series E led by Andreessen Horowitz and Khosla Ventures in April 2026, valuing it at five point three billion dollars, with a reported extension of a further three hundred and sixteen million.",
+      "why_it_matters": "Ambient documentation is the first AI product hospitals bought at scale, and it won because it gave time back rather than replacing anyone.",
+      "founder_angle": "Sell the hour back to the person who hates their paperwork. That buyer signs quickly and stays.",
+      "momentum": 5,
+      "tags": [
+        "healthcare",
+        "ambient-ai",
+        "enterprise"
+      ],
+      "sources": [
+        "https://www.mobihealthnews.com/news/abridge-secures-300m-boosts-valuation-53b",
+        "https://www.fiercehealthcare.com/ai-and-machine-learning/ambient-ai-startup-abridge-scores-300m-series-e-backed-a16z-and-khosla"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "glimpse",
+      "name": "Glimpse",
+      "program": "a16z",
+      "batch": "YC alum, a16z Series A",
+      "sector": "Fintech, retail",
+      "one_liner": "Chases the money big retailers quietly deduct from consumer brands.",
+      "what_they_do": "When a supermarket chain pays a brand less than the invoice - a deduction for a damaged pallet, a late delivery, a promotion - somebody has to dispute it, line by line. Glimpse automates that deduction and dispute process for consumer packaged goods brands.",
+      "traction": "A Y Combinator company that pivoted into this, then raised a large Series A on the back of it.",
+      "funding": "A thirty-five million dollar Series A led by Andreessen Horowitz, with 8VC and Y Combinator participating, announced March 2026.",
+      "why_it_matters": "An unglamorous back-office leak with real money in it, in an industry where the incumbent process is a spreadsheet and a phone call.",
+      "founder_angle": "This is a pivot story. The company that raised the Series A is not the company that got into the batch.",
+      "momentum": 4,
+      "tags": [
+        "fintech",
+        "retail",
+        "automation",
+        "pivot"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/25/a16z-backed-glimpse-raises-new-funds-accelerates-dispute-tracking-automation-for-cpg-brands/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "saronic",
+      "name": "Saronic",
+      "program": "a16z",
+      "batch": "American Dynamism",
+      "sector": "Defense",
+      "one_liner": "Autonomous boats, built in America, at a price the navy can buy in numbers.",
+      "what_they_do": "Saronic builds uncrewed surface vessels - autonomous boats for naval missions, designed to be produced in volume rather than as bespoke million-dollar craft.",
+      "traction": "One of the flagship companies of Andreessen Horowitz's American Dynamism practice, alongside Anduril.",
+      "funding": "Reported to have raised a one hundred and seventy-five million dollar Series B at a one billion dollar valuation, led by Andreessen Horowitz.",
+      "why_it_matters": "Andreessen Horowitz raised about one point two billion dollars for American Dynamism alone in January 2026. Defense manufacturing is now a core venture category, not a curiosity.",
+      "founder_angle": "Same lesson as 9 Mothers, at a bigger scale: in defense, cheap and many beats exquisite and few.",
+      "momentum": 4,
+      "tags": [
+        "defense",
+        "maritime",
+        "american-dynamism",
+        "manufacturing"
+      ],
+      "sources": [
+        "https://a16z.com/american-dynamism/",
+        "https://news.crunchbase.com/venture/a16z-15b-new-funds-american-dynamism-ben-horowitz/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "anduril",
+      "name": "Anduril",
+      "program": "a16z",
+      "batch": "American Dynamism",
+      "sector": "Defense",
+      "one_liner": "The company that proved a startup could sell serious weapons systems.",
+      "what_they_do": "Anduril builds autonomous defense systems - surveillance towers, drones, counter-drone systems, and the software layer that ties them together - and sells them as products rather than as decade-long cost-plus programmes.",
+      "traction": "The anchor company of the whole defense tech wave, and the reason a batch of 2026 accelerator companies could raise money on counter-drone and autonomy pitches at all.",
+      "funding": "A long-standing Andreessen Horowitz position and the firm's most-cited American Dynamism company.",
+      "why_it_matters": "Every defense company in this brief is, in some sense, pitching investors on being early Anduril.",
+      "founder_angle": "One company changing what investors believe is possible opens the door for a hundred more. Being second into a proven category is much easier than being first.",
+      "momentum": 4,
+      "tags": [
+        "defense",
+        "autonomy",
+        "benchmark"
+      ],
+      "sources": [
+        "https://a16z.com/american-dynamism/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "ambience",
+      "name": "Ambience Healthcare",
+      "program": "a16z",
+      "batch": "a16z-backed",
+      "sector": "Healthcare AI",
+      "one_liner": "Ambient AI that documents the visit and gets the billing code right.",
+      "what_they_do": "Ambience listens to clinical encounters and produces documentation, with a heavy focus on coding and compliance - the part that decides whether the hospital actually gets paid correctly for the visit.",
+      "traction": "Reported to have raised a two hundred and forty-three million dollar Series C led by Oak HC slash FT, competing directly with Abridge.",
+      "funding": "Two hundred and forty-three million dollar Series C, reported.",
+      "why_it_matters": "Two very well-funded companies in the same category, differentiating on revenue capture rather than transcription quality.",
+      "founder_angle": "When a category has an obvious leader, the wedge is usually the adjacent workflow the leader treats as secondary.",
+      "momentum": 4,
+      "tags": [
+        "healthcare",
+        "ambient-ai",
+        "revenue-cycle"
+      ],
+      "sources": [
+        "https://newmarketpitch.com/blogs/news/healthcare-ai-funding-deals",
+        "https://aifundingtracker.com/top-ai-healthcare-startups/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "hippocratic-ai",
+      "name": "Hippocratic AI",
+      "program": "breakout",
+      "batch": "Breakout",
+      "sector": "Healthcare AI",
+      "one_liner": "Voice AI agents that call patients and do the nursing follow-up.",
+      "what_they_do": "Rather than transcribing a visit, Hippocratic builds patient-facing voice agents: intake calls, pre-operation checks, chronic care check-ins and inpatient nursing support, in a category where a mistake has real consequences.",
+      "traction": "Described as the clear category leader in patient-facing AI agents, reportedly valued around three point five billion dollars, up from one point six four billion at its Series B.",
+      "funding": "A one hundred and forty-one million dollar Series B led by Kleiner Perkins, with a later valuation reported at about three point five billion dollars.",
+      "why_it_matters": "It is the most aggressive test anywhere of whether an AI agent can be trusted to speak directly to a patient.",
+      "founder_angle": "They priced by the hour of nursing work delivered, not by software seat. In healthcare, match the buyer's existing budget line.",
+      "momentum": 4,
+      "tags": [
+        "healthcare",
+        "voice",
+        "agents"
+      ],
+      "sources": [
+        "https://www.businesswire.com/news/home/20250109643850/en/Hippocratic-AI-Completes-141MM-Series-B-Financing-Round-Led-by-Kleiner-Perkins-Valuing-the-Company-at-1.64B",
+        "https://aifundingtracker.com/top-ai-healthcare-startups/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "keythorn",
+      "name": "Keythorn",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Insurance",
+      "one_liner": "Insurance for the new risks that appear when agents act on your behalf.",
+      "what_they_do": "Keythorn is underwriting the risks created as AI agents enter the economy. When an agent books, buys, files or acts wrongly, somebody carries that liability - and right now almost nobody has priced it.",
+      "traction": "In the seventh Speedrun cohort, which is running right now: it started on 27 July and its Demo Day is 6 October 2026. Details are thin by design at this stage.",
+      "funding": "a16z Speedrun invests up to one million dollars, plus up to five million in credits.",
+      "why_it_matters": "Insurance is how a new technology becomes legally deployable at scale. This is a bet on being early to that.",
+      "founder_angle": "Ask what breaks legally and financially when the hyped thing works. That question is a company.",
+      "momentum": 4,
+      "tags": [
+        "insurance",
+        "agents",
+        "risk",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "phyvant",
+      "name": "Phyvant",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Enterprise AI",
+      "one_liner": "AI that learns how your staff actually get things done, not how the manual says.",
+      "what_they_do": "Phyvant builds procedural memory for the enterprise - capturing the real sequence of steps employees follow to do a job, so an agent can repeat it rather than improvise from a document.",
+      "traction": "Part of the Speedrun SR007 cohort now in progress, with Demo Day on 6 October 2026.",
+      "funding": "a16z Speedrun SR007.",
+      "why_it_matters": "Same insight as Jedify from a different angle: the missing ingredient for enterprise agents is knowledge that was never written down.",
+      "founder_angle": "Two funded companies attacking enterprise context from opposite ends is a signal, not a coincidence. That is where the market is.",
+      "momentum": 4,
+      "tags": [
+        "enterprise",
+        "agents",
+        "memory",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "elu",
+      "name": "ELU",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Developer tools",
+      "one_liner": "Software that repairs itself.",
+      "what_they_do": "ELU is working on self-healing software - systems that detect their own failures and fix them without a human in the loop, the logical end point of what Sazabi does one step at a time.",
+      "traction": "In the Speedrun SR007 cohort currently running, Demo Day 6 October 2026.",
+      "funding": "a16z Speedrun SR007.",
+      "why_it_matters": "If code can write itself, the next question is whether it can maintain itself. Several teams are now betting yes.",
+      "founder_angle": "Watch what the newest cohort is building. It is the closest thing to a live feed of what smart people think is now possible.",
+      "momentum": 3,
+      "tags": [
+        "devtools",
+        "autonomy",
+        "reliability",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "bounty",
+      "name": "Bounty",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Agent infrastructure",
+      "one_liner": "A marketplace where agents hire other agents.",
+      "what_they_do": "Bounty is building an agent marketplace - a place where a task can be posted and picked up by whichever agent can do it, rather than every company wiring every capability itself.",
+      "traction": "Speedrun SR007, currently in programme.",
+      "funding": "a16z Speedrun SR007.",
+      "why_it_matters": "Marketplaces only work once supply is plentiful and interchangeable. Somebody has decided agents just crossed that line.",
+      "founder_angle": "Marketplace timing is everything. Too early and there is no supply; too late and someone owns the demand.",
+      "momentum": 3,
+      "tags": [
+        "marketplace",
+        "agents",
+        "infrastructure",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "openwhispr",
+      "name": "OpenWhispr",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Voice AI",
+      "one_liner": "Voice as the way you drive software.",
+      "what_they_do": "OpenWhispr is building voice AI tooling - dictation and speech control aimed at making talking a first-class way to operate a computer rather than a novelty.",
+      "traction": "Speedrun SR007, Demo Day 6 October 2026.",
+      "funding": "a16z Speedrun SR007.",
+      "why_it_matters": "Voice keeps almost working. Every cycle, transcription gets good enough that somebody rebuilds the interface layer on top.",
+      "founder_angle": "Relevant to how you are consuming this brief. Audio-first interfaces are having a genuine moment.",
+      "momentum": 3,
+      "tags": [
+        "voice",
+        "interface",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
+      "as_of": "2026-09-03"
+    },
+    {
+      "id": "kira",
+      "name": "Kira",
+      "program": "speedrun",
+      "batch": "SR007",
+      "sector": "Climate, water",
+      "one_liner": "Water technology, in a cohort otherwise full of software.",
+      "what_they_do": "Kira is the water technology company in the current Speedrun batch - one of the few in a cohort where the overwhelming majority carry an AI tag and more than half sell to businesses.",
+      "traction": "Speedrun SR007, currently running.",
+      "funding": "a16z Speedrun SR007.",
+      "why_it_matters": "Data centres consume enormous quantities of water. Water and power are becoming the same conversation.",
+      "founder_angle": "Being the only one of your kind in a cohort is a position, not a problem. You are the memorable pitch in the room.",
+      "momentum": 3,
+      "tags": [
+        "climate",
+        "water",
+        "hardware",
+        "current-cohort"
+      ],
+      "sources": [
+        "https://www.frontrun.vc/blog/a16z-speedrun-cohort-007-companies/"
+      ],
       "as_of": "2026-09-03"
     }
   ]
