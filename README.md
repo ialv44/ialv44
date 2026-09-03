@@ -7,7 +7,7 @@ against.
 
 It is built for the car. You press play once, and it talks you through a handful
 of companies: what they do, what traction they have, where the money came from,
-why it matters, and one thing you could steal for your own idea. It ends with
+why it matters, and one idea worth taking away. It ends with
 three questions to think about while you finish the drive.
 
 ## Listen now, with nothing installed
@@ -54,6 +54,41 @@ you over a plain bookmark:
 Prefer serving from a branch folder instead of Actions? Build with
 `--site docs` and point Pages at `/docs`.
 
+## The voice
+
+There are two, and the app uses the better one it has.
+
+**Studio voice.** If the build generated audio, the app plays those files —
+proper neural narration, not a robot. This is what you want, and it is what
+the daily workflow produces:
+
+```bash
+pip install edge-tts
+PYTHONPATH=src python -m briefing brief --audio
+PYTHONPATH=src python -m briefing site        # publishes the audio with the app
+```
+
+Pick a different narrator with `--voice`. Some good ones:
+
+| Voice | Sounds like |
+| --- | --- |
+| `en-US-AndrewMultilingualNeural` | Default. Warm, unhurried American. |
+| `en-US-AvaMultilingualNeural` | Brighter American, quicker. |
+| `en-GB-RyanNeural` | Measured British. |
+| `en-IN-PrabhatNeural` | Indian English. |
+
+Run `edge-tts --list-voices` for the rest.
+
+**Device voice.** With no audio files, the page falls back to the voice built
+into your browser or phone. Quality varies enormously, so the player ranks the
+installed voices and picks the most natural one, and there is a **Voice**
+selector under the player to override it — your choice is remembered.
+
+If every option there sounds robotic, the good voices usually need downloading
+once: on iPhone, Settings → Accessibility → Spoken Content → Voices, and pick
+an *Enhanced* or *Premium* English voice. Android does the same through Google
+Text-to-speech.
+
 ## Put it in a podcast app
 
 For real audio files you can subscribe to in the car:
@@ -86,7 +121,7 @@ commits the result, so a new episode is waiting when you get in the car.
 
 `data/watchlist.json` holds every company, hand-written to be *spoken* rather
 than read. Each entry carries what they do, traction, funding, why it matters,
-a "steal this" note for your own idea, a momentum score, and the sources the
+a "what it teaches" note for your own thinking, a momentum score, and the sources the
 numbers came from.
 
 Edit it freely — it is the whole content layer:

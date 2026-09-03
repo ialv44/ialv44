@@ -67,8 +67,7 @@ def _intro(on: date, picks: list[Company], watchlist: Watchlist) -> Segment:
             f"Today we have {len(picks)} companies:",
             listed + ".",
             "Each one takes about a minute. I will tell you what they do, what "
-            "traction they have, why it matters, and one thing you could steal "
-            "from them for your own idea.",
+            "traction they have, why it matters, and one idea worth taking away.",
             "Let's go.",
         ],
         {"count": len(picks), "curated_on": watchlist.curated_on},
@@ -92,7 +91,7 @@ def _company(index: int, total: int, c: Company, watchlist: Watchlist) -> Segmen
             "On traction:", c.traction,
             "On money:", c.funding,
             "Why it matters:", c.why_it_matters,
-            "And the thing to steal:", c.founder_angle,
+            "And what it teaches:", c.founder_angle,
         ],
         {
             "program": c.program, "program_name": program, "batch": c.batch,
@@ -184,7 +183,7 @@ def company_solo(c: Company, watchlist: Watchlist) -> Segment:
             "Traction:", c.traction,
             "Money:", c.funding,
             "Why it matters:", c.why_it_matters,
-            "What to steal:", c.founder_angle,
+            "What it teaches:", c.founder_angle,
         ],
         {"program": c.program, "program_name": program, "batch": c.batch,
          "sector": c.sector, "tags": c.tags, "momentum": c.momentum,

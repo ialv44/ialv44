@@ -117,6 +117,33 @@ def _document(fragment: str, build_id: str) -> str:
 """
 
 
+def _publish_audio(episode: Episode, out_dir: Path,
+                   source_dir: Path | None) -> dict[str, str]:
+    """Copy an episode's narration next to the app and map segment -> file.
+
+    Files are named `NN-<segment id>.<ext>` by `briefing.tts`, so the segment a
+    file belongs to is in its name.
+    """
+    if not source_dir:
+        return {}
+    folder = source_dir / f"audio-{episode.date}"
+    if not folder.is_dir():
+        return {}
+    known = {segment.id for segment in episode.segments}
+    target = out_dir / "audio" / episode.date
+    mapping: dict[str, str] = {}
+    for path in sorted(folder.iterdir()):
+        if path.suffix.lower() not in {".mp3", ".m4a", ".wav", ".aiff", ".ogg"}:
+            continue
+        segment_id = path.stem.split("-", 1)[-1]
+        if segment_id not in known:
+            continue
+        target.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, target / path.name)
+        mapping[segment_id] = f"audio/{episode.date}/{path.name}"
+    return mapping
+
+
 def build(episodes: list[tuple[Episode, Watchlist]], out_dir: Path, template: Path,
           source_dir: Path | None = None, base_url: str = "") -> dict[str, Path]:
     """Write the whole site. `episodes` is newest-first; the first one ships embedded."""
@@ -132,6 +159,9 @@ def build(episodes: list[tuple[Episode, Watchlist]], out_dir: Path, template: Pa
     index = []
     for episode, watchlist in episodes:
         payload = render.payload(episode, watchlist)
+        audio = _publish_audio(episode, out_dir, source_dir)
+        if audio:
+            payload["episode"]["audio"] = audio
         (data_dir / f"{episode.date}.json").write_text(
             json.dumps(payload, ensure_ascii=False), encoding="utf-8")
         index.append({

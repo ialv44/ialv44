@@ -201,6 +201,16 @@
   .rate button:first-child { border-left: 1px solid var(--rule); }
   .rate button[aria-pressed="true"] { background: var(--accent-fill); color: var(--accent-ink); border-color: var(--accent-fill); }
   .hint { color: var(--ink-soft); font-size: .85rem; margin-top: 14px; }
+  .voicebar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
+  .voicebar label { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em;
+                    text-transform: uppercase; color: var(--ink-soft); }
+  .voicebar select {
+    font-family: var(--body); font-size: .95rem; padding: 9px 10px; min-height: 44px;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--rule); max-width: 22rem;
+  }
+  .badge { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+           padding: 4px 8px; border: 1px solid var(--rule); color: var(--ink-soft); }
+  .badge.studio { border-color: var(--accent); color: var(--accent); }
   .warn { border-left: 3px solid var(--accent); padding: 10px 14px; background: var(--surface);
           color: var(--ink-soft); font-size: .92rem; margin-top: 18px; }
   .install { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px;
@@ -255,6 +265,12 @@
     <span id="installMsg"></span>
     <button class="go" id="installBtn" hidden>Add to home screen</button>
     <button id="installX">Not now</button>
+  </div>
+  <audio id="track" preload="auto"></audio>
+  <div class="voicebar" id="voiceBar">
+    <span class="badge" id="voiceBadge">Device voice</span>
+    <label for="voicePick">Voice</label>
+    <select id="voicePick" aria-label="Voice"></select>
   </div>
   <p class="hint">Space plays and pauses. Left and right arrows skip. It keeps going on its own — put the phone down.</p>
 
@@ -342,16 +358,46 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   }
   const current = () => state.adhoc || SEGS[state.index] || null;
 
-  function pickVoice() {
+  function englishVoices() {
     const voices = synth ? synth.getVoices() : [];
+    return voices.filter((v) => /^en/i.test(v.lang)).length
+      ? voices.filter((v) => /^en/i.test(v.lang))
+      : voices;
+  }
+
+  function voiceScore(voice) {
+    let score = 0;
+    // The names vendors give their good voices, and the ones they give the tinny ones.
+    if (/natural|neural|premium|enhanced|siri/i.test(voice.name)) score += 6;
+    if (/google/i.test(voice.name)) score += 4;
+    if (/compact|espeak|festival|pico/i.test(voice.name)) score -= 8;
+    if (/^en-(GB|US|IN|AU)/i.test(voice.lang)) score += 2;
+    if (voice.localService === false) score += 1;   // cloud voices are usually better
+    return score;
+  }
+
+  function pickVoice() {
+    const voices = englishVoices();
     if (!voices.length) return null;
-    const wanted = [/en-GB.*(Google|Natural|Daniel|Serena)/i, /Google UK English/i,
-                    /en-US.*(Google|Natural|Samantha|Aaron)/i, /^en[-_]/i];
-    for (const re of wanted) {
-      const hit = voices.find((v) => re.test(v.name) || re.test(v.lang));
-      if (hit) return hit;
-    }
-    return voices[0];
+    let saved = null;
+    try { saved = localStorage.getItem("briefing:voice"); } catch (e) {}
+    const chosen = saved && voices.find((v) => v.voiceURI === saved);
+    if (chosen) return chosen;
+    return voices.slice().sort((a, b) => voiceScore(b) - voiceScore(a))[0];
+  }
+
+  function renderVoicePicker() {
+    const voices = englishVoices();
+    const select = el("voicePick");
+    const studio = usingStudioAudio();
+    el("voiceBar").hidden = studio || !voices.length;
+    el("voiceBadge").textContent = studio ? "Studio voice" : "Device voice";
+    el("voiceBadge").className = studio ? "badge studio" : "badge";
+    if (studio || !voices.length) return;
+    const ranked = voices.slice().sort((a, b) => voiceScore(b) - voiceScore(a));
+    select.innerHTML = ranked.map((v) =>
+      '<option value="' + esc(v.voiceURI) + '">' + esc(v.name) + "</option>").join("");
+    if (state.voice) select.value = state.voice.voiceURI;
   }
 
   /* ---------- rendering ---------- */
@@ -375,6 +421,8 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     state.sentences = splitSentences(seg.speak);
     state.sentenceAt = 0;
     paintBody();
+
+    renderVoicePicker();
 
     const starrable = seg.kind === "company";
     el("starBtn").hidden = !starrable;
@@ -466,6 +514,31 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   });
 
   /* ---------- speaking ---------- */
+  const track = el("track");
+
+  function usingStudioAudio() {
+    const seg = current();
+    return Boolean(seg && EP.audio && EP.audio[seg.id]);
+  }
+
+  function playStudio() {
+    const seg = current();
+    const src = EP.audio[seg.id];
+    if (track.dataset.src !== src) {
+      track.src = src;
+      track.dataset.src = src;
+    }
+    track.playbackRate = state.rate;
+    track.play().catch(() => {
+      // A browser can refuse the file; the device voice still works.
+      delete EP.audio[seg.id];
+      showWarn("Could not play the recorded audio, so this one is read by your device voice.");
+      renderVoicePicker();
+      speakCurrentSentence();
+    });
+  }
+
+  track.addEventListener("ended", () => { if (state.playing) advance(); });
   let keepAlive = null;
   function speakCurrentSentence() {
     if (!synth || !state.playing) return;
@@ -491,24 +564,34 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   }
 
   function advance() {
-    if (state.adhoc) { state.adhoc = null; renderSegment(); stop(); return; }
+    if (state.adhoc) { state.adhoc = null; stop(); renderSegment(); return; }
     if (state.index >= SEGS.length - 1) { stop(); state.sentenceAt = state.sentences.length; paintBody(); return; }
     state.index += 1;
     save();
     renderSegment();
-    speakCurrentSentence();
+    if (usingStudioAudio()) playStudio(); else speakCurrentSentence();
   }
 
   function play() {
-    if (!synth) { showWarn("This browser has no built-in voice. The text below is the full brief — read it, or generate audio files from the repo."); return; }
+    const studio = usingStudioAudio();
+    if (!studio && !synth) {
+      showWarn("This browser has no built-in voice and there is no recorded audio. "
+        + "The full text of every segment is on the page.");
+      return;
+    }
     state.playing = true;
     el("playBtn").textContent = "PAUSE";
-    if (!state.voice) state.voice = pickVoice();
-    synth.cancel();
-    speakCurrentSentence();
-    // Chrome silently pauses long synthesis; nudging it keeps the brief running.
-    clearInterval(keepAlive);
-    keepAlive = setInterval(() => { if (state.playing && synth.paused) synth.resume(); }, 8000);
+    if (studio) {
+      if (synth) synth.cancel();
+      playStudio();
+    } else {
+      if (!state.voice) state.voice = pickVoice();
+      synth.cancel();
+      speakCurrentSentence();
+      // Chrome silently pauses long synthesis; nudging it keeps the brief running.
+      clearInterval(keepAlive);
+      keepAlive = setInterval(() => { if (state.playing && synth.paused) synth.resume(); }, 8000);
+    }
     updateMediaSession();
   }
 
@@ -517,6 +600,7 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     el("playBtn").textContent = "PLAY";
     clearInterval(keepAlive);
     if (synth) synth.cancel();
+    track.pause();
     paintBody();
     updateMediaSession();
   }
@@ -527,8 +611,9 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     state.adhoc = null;
     state.index = Math.max(0, Math.min(i, SEGS.length - 1));
     save();
+    stop();
     renderSegment();
-    if (state.playing) { synth.cancel(); speakCurrentSentence(); } else { play(); }
+    play();          // skipping to a segment always means "play this one"
   }
 
   function playCompany(cid) {
@@ -592,7 +677,9 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     if (!btn) return;
     state.rate = Number(btn.dataset.r);
     paintRate(); save();
-    if (state.playing) { synth.cancel(); speakCurrentSentence(); }
+    if (!state.playing) return;
+    if (usingStudioAudio()) { track.playbackRate = state.rate; }
+    else { synth.cancel(); speakCurrentSentence(); }
   });
   function paintRate() {
     document.querySelectorAll("#rate button").forEach((b) =>
@@ -606,8 +693,19 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     if (e.code === "ArrowLeft") { e.preventDefault(); go(state.index - 1); }
   });
 
+  el("voicePick").addEventListener("change", (e) => {
+    const chosen = englishVoices().find((v) => v.voiceURI === e.target.value);
+    if (!chosen) return;
+    state.voice = chosen;
+    try { localStorage.setItem("briefing:voice", chosen.voiceURI); } catch (err) {}
+    if (state.playing && !usingStudioAudio()) { synth.cancel(); speakCurrentSentence(); }
+  });
+
   if (synth) {
-    synth.onvoiceschanged = () => { if (!state.voice) state.voice = pickVoice(); };
+    synth.onvoiceschanged = () => {
+      state.voice = pickVoice();     // the list arrives late on most browsers
+      renderVoicePicker();
+    };
     window.addEventListener("beforeunload", () => synth.cancel());
   }
 
@@ -732,7 +830,9 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   renderStarred();
   renderSegment();
   paintRate();
-  if (!synth) showWarn("This browser has no built-in voice, so nothing will speak. The full text of every segment is on the page.");
+  state.voice = pickVoice();
+  renderVoicePicker();
+  if (!synth && !usingStudioAudio()) showWarn("This browser has no built-in voice, so nothing will speak. The full text of every segment is on the page.");
   hydrate();
   loadArchive();
   offerInstall();

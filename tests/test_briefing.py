@@ -168,7 +168,7 @@ class RenderTests(unittest.TestCase):
     def test_markdown_lists_sources(self):
         text = render.markdown(self.episode, self.watchlist)
         self.assertIn("Sources:", text)
-        self.assertIn("Steal this.", text)
+        self.assertIn("What it teaches.", text)
 
     def test_write_all_produces_a_latest_page(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -266,6 +266,34 @@ class SiteTests(unittest.TestCase):
             worker = self._build(tmp)["service_worker"].read_text(encoding="utf-8")
             self.assertIn("2026-09-03", worker)      # cache busts on a new build
             self.assertIn('caches.match(request)', worker)
+
+    def test_no_audio_folder_means_no_audio_key(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._build(tmp)
+            latest = json.loads(
+                (Path(tmp) / "data" / "latest.json").read_text(encoding="utf-8"))
+            self.assertNotIn("audio", latest["episode"])
+
+    def test_recorded_audio_is_published_and_mapped_to_segments(self):
+        episode = self.episodes[0][0]
+        with tempfile.TemporaryDirectory() as src, tempfile.TemporaryDirectory() as dst:
+            folder = Path(src) / f"audio-{episode.date}"
+            folder.mkdir()
+            for position, segment in enumerate(episode.segments):
+                (folder / f"{position:02d}-{segment.id}.mp3").write_bytes(b"ID3")
+            (folder / "playlist.m3u").write_text("ignored", encoding="utf-8")
+
+            site.build([(episode, self.watchlist)], Path(dst), TEMPLATE,
+                       source_dir=Path(src))
+            latest = json.loads(
+                (Path(dst) / "data" / "latest.json").read_text(encoding="utf-8"))
+            audio = latest["episode"]["audio"]
+
+            self.assertEqual(set(audio), {s.id for s in episode.segments})
+            first = episode.segments[0]
+            self.assertEqual(audio[first.id], f"audio/{episode.date}/00-{first.id}.mp3")
+            self.assertTrue((Path(dst) / audio[first.id]).exists())
+            self.assertFalse((Path(dst) / "audio" / episode.date / "playlist.m3u").exists())
 
     def test_empty_input_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

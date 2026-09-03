@@ -65,7 +65,7 @@ def markdown(episode: Episode, watchlist: Watchlist) -> str:
                 f"- **Traction.** {company.traction}",
                 f"- **Money.** {company.funding}",
                 f"- **Why it matters.** {company.why_it_matters}",
-                f"- **Steal this.** {company.founder_angle}",
+                f"- **What it teaches.** {company.founder_angle}",
                 "",
                 "Sources: " + ", ".join(f"<{s}>" for s in company.sources), "",
             ]
