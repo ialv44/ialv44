@@ -54,6 +54,9 @@
   }
 
   * { box-sizing: border-box; }
+  /* The artifact host supplies this; a standalone page or the hosted app does not,
+     and without it a display rule beats the hidden attribute. */
+  [hidden] { display: none !important; }
   body {
     margin: 0;
     background: var(--ground);
@@ -200,6 +203,15 @@
   .hint { color: var(--ink-soft); font-size: .85rem; margin-top: 14px; }
   .warn { border-left: 3px solid var(--accent); padding: 10px 14px; background: var(--surface);
           color: var(--ink-soft); font-size: .92rem; margin-top: 18px; }
+  .install { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px;
+             padding: 12px 14px; background: var(--surface); border: 1px solid var(--accent); }
+  .install span { flex: 1; min-width: 14rem; font-size: .92rem; }
+  .install button { font-family: var(--mono); font-size: .74rem; letter-spacing: .06em;
+                    text-transform: uppercase; padding: 10px 14px; min-height: 44px; cursor: pointer;
+                    border: 1px solid var(--rule); background: none; color: var(--ink-soft); }
+  .install button.go { background: var(--accent-fill); color: var(--accent-ink); border-color: var(--accent-fill); }
+  .stale { font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+           color: var(--accent); margin-top: 8px; }
   footer { margin: 54px 0 0; padding: 20px 0 30px; border-top: 1px solid var(--rule);
            color: var(--ink-soft); font-size: .85rem; }
   @media (max-width: 620px) {
@@ -215,6 +227,7 @@
     <div>
       <div class="eyebrow" id="kicker">Daily startup brief</div>
       <h1 id="epTitle">Startup Brief</h1>
+      <div class="stale" id="epStale"></div>
     </div>
     <div class="dial">
       <div>Run time<b id="epLen">—</b></div>
@@ -238,6 +251,11 @@
   </div>
 
   <div class="warn" id="ttsWarn" hidden></div>
+  <div class="install" id="installBar" hidden>
+    <span id="installMsg"></span>
+    <button class="go" id="installBtn" hidden>Add to home screen</button>
+    <button id="installX">Not now</button>
+  </div>
   <p class="hint">Space plays and pauses. Left and right arrows skip. It keeps going on its own — put the phone down.</p>
 
   <section>
@@ -248,6 +266,11 @@
   <section>
     <div class="sec-head"><h2>Starred</h2><span>Tap to hear it again</span></div>
     <div class="lib-grid" id="starred" style="margin-top:14px"></div>
+  </section>
+
+  <section id="archiveSec" hidden>
+    <div class="sec-head"><h2>Earlier briefs</h2><span id="archiveMeta"></span></div>
+    <div class="lib-grid" id="archive" style="margin-top:14px"></div>
   </section>
 
   <section>
@@ -280,9 +303,10 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
 
 (function () {
   "use strict";
-  const EP = DATA.episode, LIB = DATA.library || [], PROGRAMS = DATA.programs || {};
-  const SEGS = EP.segments || [];
-  const KEY = "briefing:" + (EP.date || "preview");
+  let EP = DATA.episode, LIB = DATA.library || [], PROGRAMS = DATA.programs || {};
+  let SEGS = EP.segments || [];
+  let CURATED = DATA.curated_on || "";
+  const storageKey = () => "briefing:" + (EP.date || "preview");
   const synth = window.speechSynthesis;
 
   const el = (id) => document.getElementById(id);
@@ -294,7 +318,7 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   /* ---------- persistence (private to this viewer, may be unavailable) ---------- */
   function load() {
     try {
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(storageKey());
       if (raw) {
         const saved = JSON.parse(raw);
         if (Number.isInteger(saved.index)) state.index = Math.min(saved.index, SEGS.length - 1);
@@ -305,7 +329,7 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
   }
   function save() {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ index: state.index, rate: state.rate }));
+      localStorage.setItem(storageKey(), JSON.stringify({ index: state.index, rate: state.rate }));
       localStorage.setItem("briefing:starred", JSON.stringify(state.starred));
     } catch (e) { /* nothing to do */ }
   }
@@ -389,17 +413,23 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
         '<span><span class="name">' + esc(s.heading) + '</span><span class="desc">' + esc(label || "") + "</span></span>" +
         '<span class="dur">' + mmss(s.seconds) + "</span></button></li>";
     }).join("");
-    el("queue").addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-i]");
-      if (btn) go(Number(btn.dataset.i));
-    });
+    if (!el("queue").dataset.wired) {
+      el("queue").dataset.wired = "1";
+      el("queue").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-i]");
+        if (btn) go(Number(btn.dataset.i));
+      });
+    }
 
     el("ticks").innerHTML = SEGS.map((s, i) =>
       '<button data-i="' + i + '" title="' + esc(s.heading) + '" aria-label="' + esc(s.heading) + '"></button>').join("");
-    el("ticks").addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-i]");
-      if (btn) go(Number(btn.dataset.i));
-    });
+    if (!el("ticks").dataset.wired) {
+      el("ticks").dataset.wired = "1";
+      el("ticks").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-i]");
+        if (btn) go(Number(btn.dataset.i));
+      });
+    }
   }
 
   function renderLibrary() {
@@ -412,10 +442,13 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
       return '<div class="lib-group"><h3>' + esc(PROGRAMS[key] || key) +
              " · " + groups[key].length + '</h3><div class="lib-grid">' + rows + "</div></div>";
     }).join("");
-    el("library").addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-cid]");
-      if (btn) playCompany(btn.dataset.cid);
-    });
+    if (!el("library").dataset.wired) {
+      el("library").dataset.wired = "1";
+      el("library").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-cid]");
+        if (btn) playCompany(btn.dataset.cid);
+      });
+    }
     el("libMeta").textContent = LIB.length + " companies · tap any one to hear it now";
   }
 
@@ -578,21 +611,131 @@ const DATA = /*__BRIEF_DATA__*/{"episode":{"date":"","title":"Preview","seconds"
     window.addEventListener("beforeunload", () => synth.cancel());
   }
 
+  /* ---------- a fresh brief each morning ---------- */
+  function paintHeader() {
+    el("epTitle").textContent = EP.title;
+    el("kicker").textContent = "Daily startup brief · " + (EP.date || "");
+    el("epLen").textContent = mmss(EP.seconds || 0);
+    el("epCount").textContent = SEGS.filter((s) => s.kind === "company").length;
+    el("epPool").textContent = LIB.length;
+    el("queueMeta").textContent = SEGS.length + " segments · " + mmss(EP.seconds || 0);
+    el("foot").textContent = "Figures are as reported by the sources in the repository watchlist, "
+      + "gathered " + (CURATED || EP.date) + ". Treat valuations and revenue as reported, not audited.";
+    const today = new Date().toISOString().slice(0, 10);
+    el("epStale").textContent = EP.date && EP.date < today
+      ? "Showing the brief for " + EP.date : "";
+  }
+
+  function applyData(payload) {
+    if (!payload || !payload.episode) return false;
+    EP = payload.episode;
+    SEGS = EP.segments || [];
+    if (payload.library) LIB = payload.library;
+    if (payload.programs) PROGRAMS = payload.programs;
+    if (payload.curated_on) CURATED = payload.curated_on;
+    state.adhoc = null;
+    state.index = 0;
+    load();
+    paintHeader();
+    renderQueue();
+    renderLibrary();
+    renderStarred();
+    renderSegment();
+    return true;
+  }
+
+  async function fetchJSON(path) {
+    const response = await fetch(path, { cache: "no-cache" });
+    if (!response.ok) throw new Error(response.status);
+    return response.json();
+  }
+
+  async function hydrate() {
+    // The installed app ships with the brief it was built from; this picks up
+    // today's. Offline, the service worker hands back the last one it saw.
+    try {
+      const fresh = await fetchJSON("data/latest.json");
+      if (fresh.episode && fresh.episode.date !== EP.date && !state.playing) applyData(fresh);
+    } catch (e) { /* single-file copy, or no signal — the embedded brief stands */ }
+  }
+
+  async function loadArchive() {
+    try {
+      const index = await fetchJSON("data/index.json");
+      const earlier = index.filter((e) => e.date !== EP.date)
+        .sort((a, b) => b.date.localeCompare(a.date)).slice(0, 14);
+      if (!earlier.length) return;
+      el("archive").innerHTML = earlier.map((e) =>
+        '<button class="lib-btn" data-date="' + esc(e.date) + '"><b>' + esc(e.date) + "</b>" +
+        "<span>" + esc(e.companies.slice(0, 4).join(", ")) + "</span></button>").join("");
+      el("archiveMeta").textContent = earlier.length + " to catch up on";
+      el("archiveSec").hidden = false;
+    } catch (e) { /* nothing published yet */ }
+  }
+
+  el("archive").addEventListener("click", async (e) => {
+    const btn = e.target.closest("button[data-date]");
+    if (!btn) return;
+    stop();
+    try {
+      applyData(await fetchJSON("data/" + btn.dataset.date + ".json"));
+      loadArchive();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) { showWarn("That brief is not available offline."); }
+  });
+
+  /* ---------- home screen ---------- */
+  function offerInstall() {
+    const standalone = window.matchMedia("(display-mode: standalone)").matches
+      || window.navigator.standalone;
+    let dismissed = false;
+    try { dismissed = localStorage.getItem("briefing:installed") === "no"; } catch (e) {}
+    if (standalone || dismissed || location.protocol === "file:") return;
+
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    let prompt = null;
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      prompt = event;
+      el("installMsg").textContent = "Add this to your home screen and it opens like an app, with a new brief every morning.";
+      el("installBtn").hidden = false;
+      el("installBar").hidden = false;
+    });
+    if (iOS) {
+      el("installMsg").textContent = "Add this to your home screen: tap Share, then Add to Home Screen. It then opens like an app.";
+      el("installBar").hidden = false;
+    }
+    el("installBtn").addEventListener("click", async () => {
+      if (!prompt) return;
+      prompt.prompt();
+      await prompt.userChoice;
+      prompt = null;
+      el("installBar").hidden = true;
+    });
+    el("installX").addEventListener("click", () => {
+      el("installBar").hidden = true;
+      try { localStorage.setItem("briefing:installed", "no"); } catch (e) {}
+    });
+  }
+
+  function registerWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    if (location.protocol !== "http:" && location.protocol !== "https:") return;
+    navigator.serviceWorker.register("sw.js").catch(() => { /* not hosted as an app */ });
+  }
+
   /* ---------- boot ---------- */
   load();
-  el("epTitle").textContent = EP.title;
-  el("kicker").textContent = "Daily startup brief · " + (EP.date || "");
-  el("epLen").textContent = mmss(EP.seconds || 0);
-  el("epCount").textContent = SEGS.filter((s) => s.kind === "company").length;
-  el("epPool").textContent = LIB.length;
-  el("queueMeta").textContent = SEGS.length + " segments · " + mmss(EP.seconds || 0);
-  el("foot").textContent = "Figures are as reported by the sources in the repository watchlist, "
-    + "gathered " + (DATA.curated_on || EP.date) + ". Treat valuations and revenue as reported, not audited.";
+  paintHeader();
   renderQueue();
   renderLibrary();
   renderStarred();
   renderSegment();
   paintRate();
   if (!synth) showWarn("This browser has no built-in voice, so nothing will speak. The full text of every segment is on the page.");
+  hydrate();
+  loadArchive();
+  offerInstall();
+  registerWorker();
 })();
 </script>

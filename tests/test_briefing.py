@@ -11,7 +11,7 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from briefing import feed, model, render, rotation, script, speech  # noqa: E402
+from briefing import feed, icons, model, render, rotation, script, site, speech  # noqa: E402
 
 WATCHLIST = ROOT / "data" / "watchlist.json"
 TEMPLATE = ROOT / "templates" / "player.html"
@@ -197,3 +197,77 @@ class FeedTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class IconTests(unittest.TestCase):
+    def test_png_header_and_size(self):
+        data = icons.render(32)
+        self.assertTrue(data.startswith(b"\x89PNG\r\n\x1a\n"))
+        width, height = int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
+        self.assertEqual((width, height), (32, 32))
+
+    def test_render_is_deterministic(self):
+        self.assertEqual(icons.render(16), icons.render(16))
+
+    def test_write_set_covers_home_screen_sizes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            written = icons.write_set(Path(tmp))
+            self.assertIn("apple-touch-icon.png", written)
+            self.assertIn("icon-512.png", written)
+            for path in written.values():
+                self.assertGreater(path.stat().st_size, 100)
+
+
+class SiteTests(unittest.TestCase):
+    def setUp(self):
+        self.watchlist = model.load(WATCHLIST)
+        self.episodes = [
+            (script.build(self.watchlist, date(2026, 9, 3), count=5), self.watchlist),
+            (script.build(self.watchlist, date(2026, 9, 2), count=5), self.watchlist),
+        ]
+
+    def _build(self, tmp):
+        return site.build(self.episodes, Path(tmp), TEMPLATE)
+
+    def test_app_files_are_written(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._build(tmp)
+            root = Path(tmp)
+            for name in ("index.html", "manifest.webmanifest", "sw.js",
+                         "icon-192.png", "apple-touch-icon.png", ".nojekyll"):
+                self.assertTrue((root / name).exists(), name)
+
+    def test_document_is_a_real_page_with_a_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            page = self._build(tmp)["index"].read_text(encoding="utf-8")
+            self.assertTrue(page.startswith("<!doctype html>"))
+            self.assertIn('<link rel="manifest" href="manifest.webmanifest">', page)
+            self.assertIn('name="viewport"', page)
+            self.assertIn("</style>\n</head>", page)
+            self.assertIn('const DATA = {"episode"', page)  # works before any fetch
+
+    def test_latest_matches_the_newest_episode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp) / "data"
+            self._build(tmp)
+            latest = json.loads((data / "latest.json").read_text(encoding="utf-8"))
+            self.assertEqual(latest["episode"]["date"], "2026-09-03")
+            self.assertEqual(len(latest["library"]), len(self.watchlist.companies))
+
+    def test_archive_index_lists_every_episode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._build(tmp)
+            index = json.loads((Path(tmp) / "data" / "index.json").read_text(encoding="utf-8"))
+            self.assertEqual([e["date"] for e in index], ["2026-09-03", "2026-09-02"])
+            self.assertTrue(all(e["companies"] for e in index))
+
+    def test_service_worker_keeps_data_fresh_and_shell_cached(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            worker = self._build(tmp)["service_worker"].read_text(encoding="utf-8")
+            self.assertIn("2026-09-03", worker)      # cache busts on a new build
+            self.assertIn('caches.match(request)', worker)
+
+    def test_empty_input_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(ValueError):
+                site.build([], Path(tmp), TEMPLATE)

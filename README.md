@@ -23,6 +23,37 @@ where you stopped. Lock-screen and steering-wheel media buttons work where the
 browser supports them. Tap any company in the watchlist below the player to hear
 just that one, any time — "tell me about Mercor" is a tap.
 
+## Install it as an app
+
+The version you actually live with: a small site you add to your home screen
+once, which then picks up a new brief every morning by itself.
+
+```bash
+PYTHONPATH=src python -m briefing site        # builds site/
+python -m http.server -d site 8000            # then open http://localhost:8000
+```
+
+To host it, turn on **GitHub Pages → Source: GitHub Actions** in the repository
+settings. The included workflow builds a brief every morning, publishes the
+site, and your installed app updates itself. Open the published URL on your
+phone and:
+
+- **iPhone** — Share → Add to Home Screen.
+- **Android** — the page offers "Add to home screen" itself.
+
+It then launches full screen with its own icon, no browser bar. What that buys
+you over a plain bookmark:
+
+- **A new brief every morning** without reinstalling anything — the app fetches
+  the latest episode on open, and falls back to the one it already has.
+- **It works in a tunnel.** A service worker caches the app and the most recent
+  brief, so a dead signal on the drive does not stop playback.
+- **Earlier briefs.** Anything you missed is listed under "Earlier briefs" and
+  plays on tap.
+
+Prefer serving from a branch folder instead of Actions? Build with
+`--site docs` and point Pages at `/docs`.
+
 ## Put it in a podcast app
 
 For real audio files you can subscribe to in the car:
@@ -47,6 +78,7 @@ commits the result, so a new episode is waiting when you get in the car.
 | --- | --- |
 | `brief` | Build a day's episode. `--date`, `--count`, `--exclude`, `--audio` |
 | `feed` | Write the podcast RSS for everything in `out/` |
+| `site` | Build the installable app into `site/` |
 | `check` | Validate the watchlist and show how the rotation is spread |
 | `list` | Print the watchlist. `--program a16z` to filter |
 
@@ -103,6 +135,8 @@ src/briefing/script.py   assembles the episode: intro, companies, pattern, outro
 src/briefing/render.py   page, markdown and JSON output
 src/briefing/tts.py      optional audio files
 src/briefing/feed.py     podcast RSS
+src/briefing/site.py     the installable app: shell, daily data, service worker
+src/briefing/icons.py    the app icon, drawn in code
 templates/player.html    the listening page
 tests/                   python -m unittest discover -s tests
 ```

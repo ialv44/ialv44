@@ -9,7 +9,7 @@ from datetime import date
 from pathlib import Path
 
 from . import feed as feed_mod
-from . import model, render, rotation, script, tts
+from . import model, render, rotation, script, site as site_mod, tts
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_WATCHLIST = ROOT / "data" / "watchlist.json"
@@ -78,6 +78,31 @@ def cmd_feed(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_site(args: argparse.Namespace) -> int:
+    """Rebuild the installable app from every brief in out/."""
+    watchlist = model.load(args.watchlist)
+    out_dir = Path(args.out)
+    episodes = []
+    for path in sorted(out_dir.glob("brief-*.json"), reverse=True):
+        stamp = path.stem.replace("brief-", "")
+        episodes.append((
+            script.build(watchlist, date.fromisoformat(stamp),
+                         count=args.count, seed=args.seed),
+            watchlist,
+        ))
+    if not episodes:
+        print("No briefs in out/ yet. Run `brief` first.", file=sys.stderr)
+        return 1
+
+    written = site_mod.build(episodes, Path(args.site), Path(args.template),
+                             source_dir=out_dir, base_url=args.base_url)
+    print(f"{len(episodes)} episodes -> {args.site}")
+    for label, path in written.items():
+        print(f"  {label:15} {path}")
+    print(f"  serve locally:  python -m http.server -d {args.site} 8000")
+    return 0
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     watchlist = model.load(args.watchlist)
     programs: dict[str, int] = {}
@@ -123,6 +148,15 @@ def build_parser() -> argparse.ArgumentParser:
     feed.add_argument("--base-url", required=True,
                       help="public URL the audio files are served from")
     feed.set_defaults(func=cmd_feed)
+
+    site = sub.add_parser("site", help="build the installable app in site/")
+    site.add_argument("--site", default=str(ROOT / "site"))
+    site.add_argument("--template", default=str(DEFAULT_TEMPLATE))
+    site.add_argument("--count", type=int, default=8)
+    site.add_argument("--seed", default="v1")
+    site.add_argument("--base-url", default="",
+                      help="public URL, needed only for the podcast feed")
+    site.set_defaults(func=cmd_site)
 
     check = sub.add_parser("check", help="validate the watchlist")
     check.add_argument("--count", type=int, default=8)
