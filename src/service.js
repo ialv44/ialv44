@@ -5,6 +5,12 @@ import { formPods, waitingReason } from './core/pods.js';
 import { nextOccurrence } from './core/rituals.js';
 import { podMomentum, warmthMap, pairWarmth } from './core/momentum.js';
 import { detectNudges } from './core/nudges.js';
+import {
+  eligiblePairs, openScreening, nextSpeaker, isComplete, currentTopic,
+  lastMessageTo, unknownsFor, concernsFor, topicIndex,
+} from './core/screening.js';
+import { proposeIntroduction, recordDecision, viewFor, isExpired, expire } from './core/introductions.js';
+import { delegateTurn, delegateVerdict } from './agent/delegate.js';
 import { onboardingTurn, introducePod, writeNudge, agentAvailable } from './agent/index.js';
 import { nextMissingField } from './agent/fallback.js';
 
@@ -162,8 +168,16 @@ export async function runNudges(store, { now = new Date(), limit = 50 } = {}) {
 
 export async function tick(store, { now = new Date() } = {}) {
   const matched = await runMatchmaking(store, { now });
+  await expireIntroductions(store, { now });
+  const screened = await runScreenings(store, { now });
   const nudges = await runNudges(store, { now });
-  return { podsCreated: matched.created.length, waiting: matched.waiting, nudges };
+  return {
+    podsCreated: matched.created.length,
+    waiting: matched.waiting,
+    screenings: screened.length,
+    introductions: screened.filter((s) => s.introduction).length,
+    nudges,
+  };
 }
 
 export async function recordMeetup(store, { podId, at, attendedIds, note = '' }) {
@@ -276,7 +290,140 @@ export function overview(store, { now = new Date() } = {}) {
     unpodded: store.unpodded().length,
     meetups: d.meetups.length,
     pendingNudges: d.nudges.filter((n) => n.status === 'pending').length,
+    screenings: d.screenings.length,
+    pendingApprovals: d.introductions.filter((i) => i.status === 'pending').length,
+    introduced: d.introductions.filter((i) => i.status === 'approved').length,
+    intents: [...new Set(d.members.flatMap((m) => m.intents || []))],
     podHealth: active.map((p) => ({ id: p.id, name: p.name, ...podMomentum(p, ctx) })),
     cities: [...new Set(d.members.map((m) => m.city).filter(Boolean))],
   };
+}
+
+// --- agent-to-agent screening --------------------------------------------
+
+/**
+ * The full pipeline, in the order the user experiences it:
+ *
+ *   1. deterministic prefilter   — hard gates, a fit floor, readiness, cooldown
+ *   2. delegate talks to delegate — a bounded, alternating conversation
+ *   3. each delegate writes a verdict for its own owner, privately
+ *   4. two recommends become an introduction request
+ *   5. nothing is revealed until both owners approve
+ *
+ * Steps 1, 4 and 5 are deterministic. Only 2 and 3 are the model, and both
+ * degrade to templates rather than failing.
+ */
+export async function runScreenings(store, { now = new Date(), limit } = {}) {
+  const candidates = eligiblePairs(store, { now, limit });
+  const completed = [];
+
+  for (const candidate of candidates) {
+    const [aId, bId] = candidate.pairIds;
+    const a = store.member(aId);
+    const b = store.member(bId);
+    if (!a || !b) continue;
+
+    const screening = { id: id('scr'), ...openScreening({ ...candidate, now }) };
+
+    while (!isComplete(screening)) {
+      const speakerId = nextSpeaker(screening);
+      const me = speakerId === aId ? a : b;
+      const them = speakerId === aId ? b : a;
+      const incoming = lastMessageTo(screening, speakerId)?.message || null;
+
+      const turn = await delegateTurn({
+        me,
+        them,
+        intentKey: screening.intent,
+        topic: currentTopic(screening, speakerId),
+        topicIndex: topicIndex(screening, speakerId),
+        incoming,
+        turnNumber: screening.turns.length + 1,
+      });
+
+      screening.turns.push({
+        speakerId,
+        message: turn.message,
+        unknowns: turn.unknowns || [],
+        concerns: turn.concerns || [],
+        agentOffline: Boolean(turn.offline),
+        at: new Date(now.getTime() + screening.turns.length * 1000).toISOString(),
+      });
+    }
+
+    screening.state = 'complete';
+    screening.completedAt = now.toISOString();
+
+    const transcript = screening.turns.map((t) => ({
+      who: t.speakerId === aId ? a.displayName : b.displayName,
+      message: t.message,
+    }));
+
+    const verdicts = {};
+    for (const speakerId of screening.pairIds) {
+      const me = speakerId === aId ? a : b;
+      const them = speakerId === aId ? b : a;
+      verdicts[speakerId] = await delegateVerdict({
+        me,
+        them,
+        intentKey: screening.intent,
+        transcript,
+        fit: screening.fit,
+        unknowns: unknownsFor(screening, speakerId),
+        concerns: concernsFor(screening, speakerId),
+      });
+    }
+    screening.verdicts = verdicts;
+
+    const proposed = proposeIntroduction({ screening, verdicts, now });
+    const intro = proposed ? { id: id('int'), ...proposed } : null;
+
+    await store.mutate((d) => {
+      d.screenings.push(screening);
+      if (intro) d.introductions.push(intro);
+    });
+    completed.push({ screening, introduction: intro });
+  }
+
+  return completed;
+}
+
+export async function respondToIntroduction(store, introId, memberId, decision, { note = '', now = new Date() } = {}) {
+  return store.mutate((d) => {
+    const intro = d.introductions.find((i) => i.id === introId);
+    if (!intro) throw new Error('introduction not found');
+    if (isExpired(intro, now)) {
+      expire(intro, now);
+      throw new Error('introduction expired');
+    }
+    recordDecision(intro, memberId, decision, { note, now });
+    return intro;
+  });
+}
+
+/** Sweeps stale approval requests so nobody's inbox rots. */
+export async function expireIntroductions(store, { now = new Date() } = {}) {
+  const stale = store.data.introductions.filter((i) => isExpired(i, now));
+  if (!stale.length) return [];
+  await store.mutate((d) => {
+    for (const i of d.introductions) if (isExpired(i, now)) expire(i, now);
+  });
+  return stale.map((i) => i.id);
+}
+
+/** One member's approval inbox, redacted per the rules in introductions.js. */
+export function introductionsFor(store, memberId, { now = new Date(), includeResolved = true } = {}) {
+  return store.data.introductions
+    .filter((i) => i.pairIds.includes(memberId))
+    .filter((i) => includeResolved || i.status === 'pending')
+    .map((i) => {
+      const otherId = i.pairIds.find((x) => x !== memberId);
+      const other = store.member(otherId);
+      return viewFor(i, memberId, {
+        other: other ? { ...publicView(other), monthsInCity: monthsInCity(other, now) } : null,
+        screening: store.screening(i.screeningId),
+        now,
+      });
+    })
+    .sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt));
 }

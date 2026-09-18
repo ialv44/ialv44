@@ -1,4 +1,5 @@
 import { DAYS, WINDOWS, SEEKING } from '../config.js';
+import { normalizeIntentProfile, INTENT_FIELDS } from './intent-fields.js';
 
 /**
  * A Thirdplace profile deliberately holds no precise location and no contact
@@ -21,6 +22,10 @@ export const BLANK_PROFILE = () => ({
   plansStyle: 'planner', // spontaneous | planner
   lifeStage: [], // no-kids | parent | student | remote-worker | shift-work | ...
   seeking: [],
+  // What they are here for. Everything downstream — gates, scoring, the
+  // screening agenda — is parameterised by this.
+  intents: ['friend'],
+  intentProfiles: {}, // { cofounder: {...}, partner: {...} }
   constraints: {
     maxGroupSize: 6,
     alcoholFree: false,
@@ -103,6 +108,26 @@ export function normalizeProfile(input = {}, base = BLANK_PROFILE()) {
     open1on1: consent.open1on1 !== false,
   };
 
+  const known = Object.keys(INTENT_FIELDS);
+  p.intents = uniq((Array.isArray(p.intents) ? p.intents : ['friend']).map(lower)).filter((i) => known.includes(i));
+  if (!p.intents.length) p.intents = ['friend'];
+
+  // Answers are kept for intents that are not currently declared, so toggling
+  // an intent off and on again does not silently wipe a questionnaire. Only
+  // declared intents are ever matched on or shown.
+  p.intentProfiles = {};
+  const touched = new Set([
+    ...Object.keys(base.intentProfiles || {}),
+    ...Object.keys(input.intentProfiles || {}),
+    ...p.intents,
+  ]);
+  for (const key of touched) {
+    if (!known.includes(key)) continue;
+    const merged = { ...(base.intentProfiles?.[key] || {}), ...((input.intentProfiles || {})[key] || {}) };
+    const normalised = normalizeIntentProfile(key, merged);
+    if (p.intents.includes(key) || Object.keys(normalised).length) p.intentProfiles[key] = normalised;
+  }
+
   p.arrivedAt = isoDateOrNull(p.arrivedAt);
   p.joinedAt = p.joinedAt || new Date().toISOString();
   return p;
@@ -132,6 +157,16 @@ export function publicView(member, viewer = null) {
     monthsInCity: monthsInCity(member),
     open1on1: member.consent.open1on1,
     notes: member.notes,
+    intents: member.intents,
+    // Intent answers are what the other person is being matched on, so they
+    // are shown — except a dealbreaker list, which is nobody else's business
+    // and would read as an accusation.
+    intentProfiles: Object.fromEntries(
+      (member.intents || []).map((k) => {
+        const { dealbreakers, ...rest } = member.intentProfiles?.[k] || {};
+        return [k, rest];
+      }),
+    ),
   };
 }
 

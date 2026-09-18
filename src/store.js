@@ -10,6 +10,8 @@ const EMPTY = () => ({
   pods: [],
   meetups: [],
   nudges: [],
+  screenings: [],
+  introductions: [],
   interactions: [], // {kind:'co-attend'|'one-on-one'|'message', a, b, at}
   blocks: [], // {by, target}
   reports: [],
@@ -66,6 +68,14 @@ export class Store {
 
   member(id) {
     return this.data.members.find((m) => m.id === id) || null;
+  }
+
+  screening(id) {
+    return this.data.screenings.find((s) => s.id === id) || null;
+  }
+
+  introduction(id) {
+    return this.data.introductions.find((i) => i.id === id) || null;
   }
 
   pod(id) {

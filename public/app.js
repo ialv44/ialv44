@@ -1,7 +1,10 @@
 const $ = (sel, root = document) => root.querySelector(sel);
 const main = $('#main');
 
-const state = { view: 'overview', overview: null, pods: [], members: [], nudges: [], me: null, busy: false };
+const state = {
+  view: 'overview', overview: null, pods: [], members: [], nudges: [], intents: [],
+  introductions: [], viewingAs: null, me: null, busy: false, openTranscript: null,
+};
 
 const api = async (method, path, body) => {
   const res = await fetch(path, {
@@ -32,17 +35,28 @@ const dayLabel = (iso) => {
 };
 
 async function refresh() {
-  const [overview, pods, members, nudges] = await Promise.all([
+  const [overview, pods, members, nudges, intents] = await Promise.all([
     api('GET', '/api/overview'),
     api('GET', '/api/pods'),
     api('GET', '/api/members'),
     api('GET', '/api/nudges?status=pending'),
+    state.intents.length ? Promise.resolve(state.intents) : api('GET', '/api/intents'),
   ]);
-  Object.assign(state, { overview, pods, members, nudges });
+  Object.assign(state, { overview, pods, members, nudges, intents });
+
+  // The inbox belongs to a person, so the demo needs to know whose eyes we are
+  // looking through. A real deployment would take this from the session.
+  if (!state.viewingAs || !members.some((m) => m.id === state.viewingAs)) {
+    state.viewingAs = state.me?.profile?.id || members[0]?.id || null;
+  }
+  state.introductions = state.viewingAs
+    ? await api('GET', `/api/introductions/${state.viewingAs}`)
+    : [];
 
   $('#c-pods').textContent = pods.length || '';
   $('#c-waiting').textContent = overview.unpodded || '';
   $('#c-nudges').textContent = nudges.length || '';
+  $('#c-intros').textContent = state.introductions.filter((i) => i.stage === 'awaiting-you').length || '';
   $('#agent-status').innerHTML = overview.agentOnline
     ? '<span class="dot on"></span>Agent online'
     : '<span class="dot off"></span>Agent offline — writing from templates. Set ANTHROPIC_API_KEY for the real voice.';
@@ -72,6 +86,13 @@ const views = {
         ${stat(o.meetups, 'meet-ups held')}
         ${stat(o.pendingNudges, 'nudges queued')}
       </div>
+      <h2>Agent screening</h2>
+      <div class="stats">
+        ${stat(o.screenings, 'screenings run')}
+        ${stat(o.pendingApprovals, 'waiting on a person')}
+        ${stat(o.introduced, 'introduced')}
+      </div>
+      <div class="row">${(o.intents || []).map((i) => `<span class="pill">${esc(i)}</span>`).join('')}</div>
       <h2>Cities</h2>
       <div class="row">${o.cities.map((c) => `<span class="pill">${esc(c)}</span>`).join('') || '<span class="meta">none</span>'}</div>
       <h2>Pod health</h2>
@@ -139,6 +160,29 @@ const views = {
         : '<div class="empty">Nothing worth saying right now. That is the intended state.</div>'}`;
   },
 
+  introductions() {
+    const picker = `
+      <div class="card" style="padding:12px 16px">
+        <div class="row" style="align-items:center">
+          <span class="meta">Viewing as</span>
+          <select id="viewing-as">
+            ${state.members.map((m) => `<option value="${esc(m.id)}"${m.id === state.viewingAs ? ' selected' : ''}>${esc(m.displayName)}</option>`).join('')}
+          </select>
+          <span class="meta">— an approval inbox belongs to one person, so pick whose.</span>
+        </div>
+      </div>`;
+
+    const pending = state.introductions.filter((i) => i.stage === 'awaiting-you');
+    const rest = state.introductions.filter((i) => i.stage !== 'awaiting-you');
+
+    return `<h1>Introductions</h1>
+      <p class="lede">Your agent screened these people with their agent, then brought you the ones
+      worth your time. Nothing was shared with them and nothing happens until you both say yes.</p>
+      ${picker}
+      ${pending.length ? pending.map(introCard).join('') : '<div class="empty">Nothing waiting on you.</div>'}
+      ${rest.length ? `<h2>Everything else</h2>${rest.map(introCard).join('')}` : ''}`;
+  },
+
   join() {
     const me = state.me;
     if (!me) {
@@ -167,11 +211,141 @@ const views = {
           <button class="action" id="chat-go">Send</button>
         </div>
       </div>
+      ${intentPicker(me)}
       ${me.pod ? podCard(me.pod) : `<div class="card"><h3>No pod yet</h3>
         <p class="why">${esc(me.waiting?.detail || 'still looking')}</p></div>`}
       <div class="row"><button class="action ghost" id="join-reset">Join as someone else</button></div>`;
   },
 };
+
+/**
+ * The intent questionnaire, generated from the field specs the server sends.
+ * The enums live in one place on the server; this renders whatever it is given.
+ */
+function intentPicker(me) {
+  const chosen = me.profile.intents || ['friend'];
+  const answers = me.profile.intentProfiles || {};
+
+  const field = (intentKey, f) => {
+    const value = answers[intentKey]?.[f.name];
+    const id = `if-${intentKey}-${f.name}`;
+    const label = `<label for="${id}">${esc(labelise(f.name))}</label>`;
+    if (f.kind === 'enum') {
+      return `<div class="field">${label}
+        <select id="${id}" data-intent-field="${intentKey}" data-field="${f.name}">
+          <option value="">—</option>
+          ${f.values.map((v) => `<option value="${esc(v)}"${v === value ? ' selected' : ''}>${esc(v)}</option>`).join('')}
+        </select></div>`;
+    }
+    if (f.kind === 'bool') {
+      return `<div class="field">${label}
+        <input type="checkbox" id="${id}" data-intent-field="${intentKey}" data-field="${f.name}"${value ? ' checked' : ''} /></div>`;
+    }
+    if (f.kind === 'number') {
+      return `<div class="field">${label}
+        <input type="number" id="${id}" min="${f.min}" max="${f.max}" value="${value ?? ''}"
+          data-intent-field="${intentKey}" data-field="${f.name}" /></div>`;
+    }
+    return `<div class="field">${label}
+      <input id="${id}" value="${esc((value || []).join(', '))}" placeholder="${f.values ? esc(f.values.join(', ')) : 'comma separated'}"
+        data-intent-field="${intentKey}" data-field="${f.name}" /></div>`;
+  };
+
+  return `
+    <div class="card">
+      <h3>What are you here for?</h3>
+      <p class="why">Pick as many as are true. Each one is screened separately, with its own
+      dealbreakers — your agent will not offer a cofounder the questions it asks a date.</p>
+      <div class="people" style="margin:12px 0">
+        ${state.intents.map((i) => `<span class="person${chosen.includes(i.key) ? ' on' : ''}"
+          data-toggle-intent="${esc(i.key)}" title="${esc(i.blurb)}">${esc(i.label)}</span>`).join('')}
+      </div>
+      ${state.intents.filter((i) => chosen.includes(i.key) && i.fields.length).map((i) => `
+        <div class="ritual">
+          <b>${esc(i.label)}</b>
+          <div class="fields">${i.fields.map((f) => field(i.key, f)).join('')}</div>
+        </div>`).join('')}
+      <div class="row" style="margin-top:12px">
+        <button class="action" id="save-intents">Save</button>
+        <span class="meta">Then run the agent to be screened.</span>
+      </div>
+    </div>`;
+}
+
+const STAGE_LABEL = {
+  'awaiting-you': 'your call',
+  'awaiting-them': 'waiting on them',
+  introduced: 'introduced',
+  closed: 'closed',
+};
+
+function introCard(intro) {
+  const v = intro.yourVerdict || {};
+  const other = intro.other;
+  const open = state.openTranscript === intro.id;
+
+  if (!other) {
+    return `<div class="card">
+      <div class="card-head"><h3>An introduction that did not go ahead</h3>
+        <span class="pill">${esc(STAGE_LABEL[intro.stage])}</span></div>
+      <p class="why">${esc(intro.note || '')}</p>
+    </div>`;
+  }
+
+  const ip = other.intentProfiles?.[intro.intent] || {};
+  const facts = Object.entries(ip).map(([k, val]) => {
+    const shown = Array.isArray(val) ? val.join(', ') : typeof val === 'boolean' ? (val ? 'yes' : 'no') : String(val);
+    return `${labelise(k)}: ${esc(shown)}`;
+  });
+
+  return `
+    <div class="card">
+      <div class="card-head">
+        <h3>${esc(v.headline || `Meet ${other.displayName}`)}</h3>
+        <span class="pill ${intro.stage === 'introduced' ? 'warm' : ''}">${esc(STAGE_LABEL[intro.stage])}</span>
+      </div>
+      <div class="meta">${esc(other.displayName)} · ${esc(other.neighborhood || other.city || '')}
+        ${other.monthsInCity != null ? `· ${plural(other.monthsInCity, 'month')} in` : ''}
+        · looking for <b>${esc(intro.intent)}</b>
+        ${v.offline ? '· <span class="pill offline">template</span>' : ''}</div>
+
+      ${facts.length ? `<div class="ritual">${facts.join('<br />')}</div>` : ''}
+
+      <div class="verdict">
+        <div class="verdict-head">Your agent's read${v.confidence != null ? ` · confidence ${Math.round(v.confidence * 100)}%` : ''}</div>
+        <ul class="reasons">${(v.why || []).map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+        ${(v.watchOuts || []).length
+          ? `<ul class="reasons watch">${v.watchOuts.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
+        ${(v.openQuestions || []).length
+          ? `<div class="asks"><b>Your agent needs you to answer:</b>
+             <ul class="reasons">${v.openQuestions.map((q) => `<li>${esc(q)}</li>`).join('')}</ul></div>` : ''}
+      </div>
+
+      ${(intro.transcript || []).length ? `
+        <button class="action ghost" data-transcript="${esc(intro.id)}" style="margin-top:12px">
+          ${open ? 'Hide' : 'Show'} what the agents said
+        </button>
+        ${open ? `<div class="chat" style="margin-top:12px">
+          ${intro.transcript.map((t) => `<div class="msg ${t.speakerId === state.viewingAs ? 'user' : 'agent'}">
+            <span class="who">${esc(nameOf(t.speakerId))}'s agent</span>${esc(t.message)}</div>`).join('')}
+        </div>` : ''}` : ''}
+
+      ${intro.stage === 'awaiting-you' ? `
+        <div class="row" style="margin-top:14px">
+          <button class="action" data-intro="${esc(intro.id)}" data-decision="approve">Yes, introduce us</button>
+          <button class="action ghost" data-intro="${esc(intro.id)}" data-decision="pass">Not this one</button>
+          <span class="meta">${intro.daysLeft != null ? `${plural(intro.daysLeft, 'day')} left` : ''}</span>
+        </div>` : ''}
+
+      ${intro.stage === 'awaiting-them' ? '<p class="meta" style="margin-top:12px">You said yes. They have not answered yet — they are not told that you did.</p>' : ''}
+      ${intro.stage === 'introduced' ? `<p class="quote" style="margin-top:12px">${esc(intro.firstStep || '')}</p>` : ''}
+      ${intro.stage === 'closed' ? `<p class="why">${esc(intro.note || '')}</p>` : ''}
+    </div>`;
+}
+
+function labelise(k) {
+  return String(k).replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase());
+}
 
 function podCard(pod) {
   const m = pod.momentum;
@@ -287,6 +461,21 @@ document.addEventListener('click', async (e) => {
     await refresh();
   });
 
+  const transcript = e.target.closest('[data-transcript]');
+  if (transcript) {
+    state.openTranscript = state.openTranscript === transcript.dataset.transcript ? null : transcript.dataset.transcript;
+    return render();
+  }
+
+  const decide = e.target.closest('[data-intro]');
+  if (decide) return busy(decide, async () => {
+    await api('POST', `/api/introductions/${decide.dataset.intro}/respond`, {
+      memberId: state.viewingAs,
+      decision: decide.dataset.decision,
+    });
+    await refresh();
+  });
+
   const person = e.target.closest('[data-member]');
   if (person) return showMember(person.dataset.member);
 
@@ -302,10 +491,46 @@ document.addEventListener('click', async (e) => {
   const chatGo = e.target.closest('#chat-go');
   if (chatGo) return sendChat(chatGo);
 
+  const toggle = e.target.closest('[data-toggle-intent]');
+  if (toggle && state.me) return busy(null, async () => {
+    const key = toggle.dataset.toggleIntent;
+    const current = new Set(state.me.profile.intents || []);
+    if (current.has(key)) current.delete(key); else current.add(key);
+    if (!current.size) current.add('friend');
+    await api('PATCH', `/api/members/${state.me.profile.id}`, { intents: [...current] });
+    await loadMe();
+  });
+
+  const saveIntents = e.target.closest('#save-intents');
+  if (saveIntents) return busy(saveIntents, async () => {
+    const intentProfiles = {};
+    for (const el of document.querySelectorAll('[data-intent-field]')) {
+      const key = el.dataset.intentField;
+      const spec = state.intents.find((i) => i.key === key)?.fields.find((f) => f.name === el.dataset.field);
+      intentProfiles[key] ||= {};
+      let v = el.type === 'checkbox' ? el.checked : el.value;
+      if (spec?.kind === 'list') v = String(v).split(',').map((x) => x.trim()).filter(Boolean);
+      if (v === '' || (Array.isArray(v) && !v.length)) continue;
+      intentProfiles[key][el.dataset.field] = v;
+    }
+    await api('PATCH', `/api/members/${state.me.profile.id}`, {
+      intents: state.me.profile.intents,
+      intentProfiles,
+    });
+    await loadMe();
+  });
+
   const reset = e.target.closest('#join-reset');
   if (reset) { localStorage.removeItem('thirdplace.me'); state.me = null; return render(); }
 
   if (e.target.closest('#detail-close')) $('#detail').close();
+});
+
+document.addEventListener('change', async (e) => {
+  if (e.target.id !== 'viewing-as') return;
+  state.viewingAs = e.target.value;
+  state.openTranscript = null;
+  await refresh();
 });
 
 document.addEventListener('keydown', (e) => {

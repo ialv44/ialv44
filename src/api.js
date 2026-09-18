@@ -2,7 +2,11 @@ import {
   joinMember, updateMember, chatTurn, runMatchmaking, runNudges, tick,
   recordMeetup, logInteraction, blockMember, reportMember, resolveNudge,
   podView, memberView, explainPair, overview,
+  runScreenings, respondToIntroduction, introductionsFor, expireIntroductions,
 } from './service.js';
+import { INTENTS, INTENT_KEYS, intentFit } from './core/intents.js';
+import { eligiblePairs, intentReadiness, readinessGaps } from './core/screening.js';
+import { INTENT_FIELDS } from './core/intent-fields.js';
 import { publicView } from './core/profile.js';
 import { seedMembers, seedHistory } from './seed.js';
 
@@ -79,6 +83,84 @@ const routes = [
   ['GET', '/api/pairs/:a/:b', (store, p) => {
     const e = explainPair(store, p.a, p.b);
     return e ? ok(e) : fail(404, 'member not found');
+  }],
+
+  ['GET', '/api/intents', () =>
+    ok(INTENT_KEYS.map((k) => ({
+      key: k,
+      label: INTENTS[k].label,
+      blurb: INTENTS[k].blurb,
+      stakes: INTENTS[k].stakes,
+      producesPods: INTENTS[k].producesPods,
+      agenda: INTENTS[k].agenda,
+      // Field specs so the client can render the questionnaire without
+      // duplicating the enums.
+      fields: Object.entries(INTENT_FIELDS[k]).map(([name, spec]) => ({ name, ...spec })),
+    })))],
+
+  ['GET', '/api/introductions/:memberId', (store, p) =>
+    store.member(p.memberId)
+      ? ok(introductionsFor(store, p.memberId))
+      : fail(404, 'member not found')],
+
+  ['POST', '/api/introductions/:id/respond', async (store, p, body) => {
+    const { memberId, decision, note } = body || {};
+    if (!store.member(memberId)) return fail(400, 'memberId must be an existing member');
+    if (!['approve', 'pass'].includes(decision)) return fail(400, 'decision must be approve or pass');
+    try {
+      const intro = await respondToIntroduction(store, p.id, memberId, decision, { note });
+      return ok(introductionsFor(store, memberId).find((i) => i.id === intro.id));
+    } catch (err) {
+      return fail(/not found/.test(err.message) ? 404 : 409, err.message);
+    }
+  }],
+
+  // What the prefilter would spend a screening on, without spending it.
+  ['GET', '/api/screenings/eligible', (store) =>
+    ok(eligiblePairs(store).map((c) => ({
+      ...c,
+      names: c.pairIds.map((x) => store.member(x)?.displayName),
+    })))],
+
+  ['GET', '/api/screenings', (store) =>
+    ok(store.data.screenings.map((sc) => ({
+      id: sc.id,
+      intent: sc.intent,
+      state: sc.state,
+      names: sc.pairIds.map((x) => store.member(x)?.displayName),
+      fit: sc.fit.score,
+      turns: sc.turns.length,
+      createdAt: sc.createdAt,
+      outcome: sc.pairIds.map((x) => sc.verdicts?.[x]?.verdict).join('/'),
+    })))],
+
+  ['POST', '/api/screenings/run', async (store) => {
+    const done = await runScreenings(store);
+    return ok({
+      screened: done.length,
+      introduced: done.filter((d) => d.introduction).length,
+      results: done.map((d) => ({
+        names: d.screening.pairIds.map((x) => store.member(x)?.displayName),
+        intent: d.screening.intent,
+        verdicts: d.screening.pairIds.map((x) => d.screening.verdicts[x].verdict),
+        introduced: Boolean(d.introduction),
+      })),
+    });
+  }],
+
+  ['GET', '/api/readiness/:memberId/:intent', (store, p) => {
+    const m = store.member(p.memberId);
+    if (!m) return fail(404, 'member not found');
+    if (!INTENT_KEYS.includes(p.intent)) return fail(400, 'unknown intent');
+    return ok({ readiness: intentReadiness(m, p.intent), gaps: readinessGaps(m, p.intent) });
+  }],
+
+  ['GET', '/api/fit/:a/:b/:intent', (store, p) => {
+    const a = store.member(p.a);
+    const b = store.member(p.b);
+    if (!a || !b) return fail(404, 'member not found');
+    if (!INTENT_KEYS.includes(p.intent)) return fail(400, 'unknown intent');
+    return ok(intentFit(a, b, p.intent, { blocks: store.data.blocks }));
   }],
 
   ['POST', '/api/match', async (store) => ok(await runMatchmaking(store))],

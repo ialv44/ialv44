@@ -15,6 +15,12 @@ export function seedMembers(now = new Date()) {
   const raw = [
     L({
       displayName: 'Ana', neighborhood: 'Graça', homeCountry: 'Brazil',
+      intents: ['friend', 'cofounder'],
+      intentProfiles: { cofounder: {
+        commitment: 'full-time', stage: 'prototype', timeline: 'now', domains: ['climate'],
+        brings: ['design', 'product'], needs: ['engineering', 'ml'],
+        equityStance: 'equal', runwayMonths: 9, priorFounder: true,
+      } },
       arrivedAt: agoDate(now, 900), joinedAt: ago(now, 40),
       languages: [{ code: 'pt', level: 'native' }, { code: 'en', level: 'fluent' }],
       learning: ['de'], interests: ['running', 'film', 'cooking'],
@@ -33,6 +39,12 @@ export function seedMembers(now = new Date()) {
     }),
     L({
       displayName: 'Priya', neighborhood: 'Arroios', homeCountry: 'India',
+      intents: ['friend', 'cofounder'],
+      intentProfiles: { cofounder: {
+        commitment: 'full-time', stage: 'idea', timeline: 'now', domains: ['climate', 'fintech'],
+        brings: ['engineering', 'ml'], needs: ['design', 'sales'],
+        equityStance: 'equal', runwayMonths: 8, priorFounder: false,
+      } },
       arrivedAt: agoDate(now, 200), joinedAt: ago(now, 36),
       languages: [{ code: 'en', level: 'native' }, { code: 'mr', level: 'native' }],
       learning: ['pt'], interests: ['running', 'bouldering', 'cooking'],
@@ -42,6 +54,14 @@ export function seedMembers(now = new Date()) {
     }),
     L({
       displayName: 'Tom', neighborhood: 'Graça', homeCountry: 'United Kingdom',
+      // Same domain, same skills gap — but tinkering on weekends while the
+      // others are going full-time. The gate should stop this one dead.
+      intents: ['friend', 'cofounder'],
+      intentProfiles: { cofounder: {
+        commitment: 'nights-weekends', stage: 'idea', timeline: 'exploring', domains: ['climate'],
+        brings: ['engineering'], needs: ['design'],
+        equityStance: 'equal', runwayMonths: 2, priorFounder: false,
+      } },
       arrivedAt: agoDate(now, 75), joinedAt: ago(now, 30),
       languages: [{ code: 'en', level: 'native' }, { code: 'es', level: 'conversational' }],
       learning: ['pt'], interests: ['running', 'board games', 'film'],
@@ -61,6 +81,10 @@ export function seedMembers(now = new Date()) {
 
     L({
       displayName: 'Rui', neighborhood: 'Campo de Ourique', homeCountry: 'Portugal',
+      intents: ['friend', 'mentor'],
+      intentProfiles: { mentor: {
+        role: 'offering', domains: ['product', 'climate'], seniority: 'lead', hoursPerMonth: 3,
+      } },
       arrivedAt: agoDate(now, 1400), joinedAt: ago(now, 26),
       languages: [{ code: 'pt', level: 'native' }, { code: 'en', level: 'fluent' }],
       learning: [], interests: ['cooking', 'food', 'chess'],
@@ -91,6 +115,10 @@ export function seedMembers(now = new Date()) {
     }),
     L({
       displayName: 'Dawit', neighborhood: 'Estrela', homeCountry: 'Ethiopia',
+      intents: ['friend', 'mentor'],
+      intentProfiles: { mentor: {
+        role: 'seeking', domains: ['product'], seniority: 'junior', hoursPerMonth: 4,
+      } },
       arrivedAt: agoDate(now, 150), joinedAt: ago(now, 20),
       languages: [{ code: 'en', level: 'fluent' }, { code: 'pt', level: 'beginner' }],
       learning: ['pt'], interests: ['cooking', 'chess', 'football'],
@@ -109,6 +137,51 @@ export function seedMembers(now = new Date()) {
       energyStyle: 'big-loud', plansStyle: 'spontaneous', lifeStage: ['shift-work'],
       seeking: ['weekly-regulars'],
       availability: [{ day: 'mon', window: 'late' }, { day: 'tue', window: 'late' }],
+    }),
+
+    // Looking for a partner. Sofia and Miguel line up; Jonas is gated on the
+    // question expat dating avoids until month four — how long are you staying.
+    L({
+      displayName: 'Sofia', neighborhood: 'Graça', homeCountry: 'Portugal',
+      arrivedAt: agoDate(now, 1100), joinedAt: ago(now, 21),
+      languages: [{ code: 'pt', level: 'native' }, { code: 'en', level: 'fluent' }],
+      learning: [], interests: ['hiking', 'film', 'cooking'],
+      energyStyle: 'small-quiet', plansStyle: 'planner', lifeStage: ['no-kids'],
+      seeking: ['deep-1on1'],
+      availability: [{ day: 'wed', window: 'evening' }, { day: 'sat', window: 'midday' }],
+      intents: ['friend', 'partner'],
+      intentProfiles: { partner: {
+        relationshipIntent: 'serious', stayingPlans: 'staying', kids: 'want',
+        ageBand: '30s', seekingAgeBands: ['30s', '40s'], dealbreakers: [],
+      } },
+    }),
+    L({
+      displayName: 'Miguel', neighborhood: 'Graça', homeCountry: 'Angola',
+      arrivedAt: agoDate(now, 700), joinedAt: ago(now, 19),
+      languages: [{ code: 'pt', level: 'native' }, { code: 'en', level: 'fluent' }],
+      learning: [], interests: ['hiking', 'cooking', 'chess'],
+      energyStyle: 'mixed', plansStyle: 'planner', lifeStage: ['no-kids'],
+      seeking: ['deep-1on1', 'weekly-regulars'],
+      availability: [{ day: 'wed', window: 'evening' }, { day: 'sat', window: 'midday' }],
+      intents: ['friend', 'partner'],
+      intentProfiles: { partner: {
+        relationshipIntent: 'serious', stayingPlans: 'staying', kids: 'want',
+        ageBand: '30s', seekingAgeBands: ['30s'], dealbreakers: [],
+      } },
+    }),
+    L({
+      displayName: 'Jonas', neighborhood: 'Alfama', homeCountry: 'Germany',
+      arrivedAt: agoDate(now, 55), joinedAt: ago(now, 17),
+      languages: [{ code: 'de', level: 'native' }, { code: 'en', level: 'fluent' }],
+      learning: ['pt'], interests: ['hiking', 'film', 'photography'],
+      energyStyle: 'mixed', plansStyle: 'spontaneous', lifeStage: ['no-kids', 'remote-worker'],
+      seeking: ['deep-1on1'],
+      availability: [{ day: 'wed', window: 'evening' }, { day: 'sat', window: 'midday' }],
+      intents: ['friend', 'partner'],
+      intentProfiles: { partner: {
+        relationshipIntent: 'serious', stayingPlans: 'temporary', kids: 'unsure',
+        ageBand: '30s', seekingAgeBands: ['30s'], dealbreakers: [],
+      } },
     }),
 
     // Too few people in this city yet.

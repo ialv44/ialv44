@@ -7,13 +7,13 @@ function set(arr) {
   return new Set(arr);
 }
 
-function intersect(a, b) {
+export function intersect(a, b) {
   const bb = set(b);
   return [...set(a)].filter((x) => bb.has(x));
 }
 
 /** Jaccard is harsh on short lists, so blend it with coverage-of-the-smaller-set. */
-function tagScore(a, b) {
+export function tagScore(a, b) {
   if (!a.length || !b.length) return 0;
   const shared = intersect(a, b).length;
   if (!shared) return 0;

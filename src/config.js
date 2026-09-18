@@ -38,6 +38,21 @@ export const tuning = {
     oneOnOneThreshold: 2.2,
     oneOnOneMinCoAttends: 3,
   },
+  screening: {
+    // Two delegates, three exchanges each. More turns do not find more truth;
+    // they just cost more and start inventing.
+    maxTurns: 6,
+    maxPairsPerRun: 5,
+    // Don't re-screen the same two people for the same thing for a month.
+    cooldownDays: 30,
+    // Below this the deterministic prefilter says no and no model is called.
+    minFitToScreen: 0.45,
+    // How much of the intent questionnaire must be answered before a delegate
+    // has enough to represent someone.
+    minReadiness: 0.6,
+    // An unanswered introduction goes stale rather than sitting forever.
+    approvalExpiryDays: 14,
+  },
   nudges: {
     newcomerWindowDays: 7,
     preMeetupHours: 24,

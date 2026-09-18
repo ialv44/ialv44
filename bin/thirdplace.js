@@ -2,7 +2,8 @@
 import { config } from '../src/config.js';
 import { Store } from '../src/store.js';
 import { seedMembers, seedHistory } from '../src/seed.js';
-import { runMatchmaking, runNudges, tick, overview, podView, agentAvailable } from '../src/service.js';
+import { runMatchmaking, runNudges, runScreenings, introductionsFor, tick, overview, podView, agentAvailable } from '../src/service.js';
+import { eligiblePairs } from '../src/core/screening.js';
 import { startServer } from '../src/server.js';
 
 const [, , cmd = 'serve', ...rest] = process.argv;
@@ -27,7 +28,10 @@ async function main() {
     case 'tick': {
       const store = await Store.open(config.dbPath);
       const result = await tick(store);
-      console.log(`${result.podsCreated} pod(s) formed, ${result.nudges.length} nudge(s) written.`);
+      console.log(
+        `${result.podsCreated} pod(s) formed, ${result.screenings} screening(s) run, `
+        + `${result.introductions} introduction(s) proposed, ${result.nudges.length} nudge(s) written.`,
+      );
       for (const n of result.nudges) console.log(`  ${dim(n.kind.padEnd(22))} ${n.title}`);
       break;
     }
@@ -52,6 +56,8 @@ async function demo(store, { quiet = false } = {}) {
 
   const { created, waiting } = await runMatchmaking(store, { now });
   await store.mutate((d) => d.meetups.push(...seedHistory(store, now)));
+  const queued = eligiblePairs(store, { now });
+  const screened = await runScreenings(store, { now });
   const nudges = await runNudges(store, { now });
 
   if (quiet) return;
@@ -84,9 +90,43 @@ async function demo(store, { quiet = false } = {}) {
     console.log('');
   }
 
+  console.log(bold('Agent screening'));
+  console.log(dim(`  the prefilter found ${queued.length} pair(s) worth a conversation; ${screened.length} were screened\n`));
+  for (const { screening: sc, introduction } of screened) {
+    const names = sc.pairIds.map((x) => store.member(x).displayName);
+    console.log(`  ${bold(names.join(' and '))} ${dim(`- ${sc.intent}, fit ${sc.fit.score}`)}`);
+    for (const t of sc.turns.slice(0, 2)) {
+      console.log(dim(`    ${store.member(t.speakerId).displayName}'s agent: ${truncate(t.message, 110)}`));
+    }
+    if (sc.turns.length > 2) console.log(dim(`    ... ${sc.turns.length - 2} more turns`));
+    for (const mid of sc.pairIds) {
+      const v = sc.verdicts[mid];
+      console.log(`    -> for ${store.member(mid).displayName}: ${v.verdict.toUpperCase()} ${dim(v.headline)}`);
+    }
+    console.log(introduction
+      ? `    ${bold('waiting on both of them to say yes')}\n`
+      : dim('    no introduction - both agents have to recommend\n'));
+  }
+
+  const inboxes = store.data.members
+    .map((m) => ({ m, pending: introductionsFor(store, m.id, { now }).filter((i) => i.stage === 'awaiting-you') }))
+    .filter((x) => x.pending.length);
+  if (inboxes.length) {
+    console.log(bold('Waiting on a person'));
+    for (const { m, pending } of inboxes) {
+      for (const i of pending) console.log(`  ${m.displayName.padEnd(8)} ${dim(`${i.intent}:`)} ${i.yourVerdict.headline}`);
+    }
+    console.log('');
+  }
+
   console.log(bold(`Nudges queued (${nudges.length})`));
   for (const n of nudges) console.log(`  ${dim(n.kind.padEnd(22))} ${n.title}`);
   console.log(`\n${dim(`Run \`npm start\` and open http://localhost:${config.port}`)}\n`);
+}
+
+function truncate(text, n) {
+  const t = String(text);
+  return t.length <= n ? t : `${t.slice(0, n - 1)}...`;
 }
 
 main().catch((err) => {
