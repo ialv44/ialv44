@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thirdplace</title>
+<meta name="description" content="An agent that builds small, durable friend groups for adults living abroad." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>&#9749;</text></svg>" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="shell">
+  <nav>
+    <div>
+      <div class="brand">Thirdplace</div>
+      <div class="tagline">Small groups, one standing time, for adults starting over somewhere new.</div>
+    </div>
+    <button data-view="overview" aria-current="true">Overview</button>
+    <button data-view="pods">Pods <span class="count" id="c-pods"></span></button>
+    <button data-view="waiting">Waiting <span class="count" id="c-waiting"></span></button>
+    <button data-view="nudges">Nudges <span class="count" id="c-nudges"></span></button>
+    <button data-view="join">Join</button>
+    <div class="nav-foot">
+      <div class="status" id="agent-status"></div>
+      <button class="action ghost" id="btn-tick">Run the agent</button>
+      <button class="action ghost" id="btn-demo">Load demo cohort</button>
+    </div>
+  </nav>
+  <main id="main"><div class="empty">Loading…</div></main>
+</div>
+
+<dialog id="detail"><div id="detail-body"></div>
+  <div class="row" style="margin-top:16px"><button class="action ghost" id="detail-close">Close</button></div>
+</dialog>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
